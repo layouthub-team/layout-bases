@@ -1,0 +1,13 @@
+@schema
+{
+	"name"		: "CSS Background",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+	<div class="sample-demo" :style="'background: '+settings.my_bg+'; padding: 100px;'">
+		<h1>Sample Text</h1>
+	</div>
+</template>

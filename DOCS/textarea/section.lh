@@ -1,0 +1,16 @@
+@schema
+{
+	"name"		: "Section Textarea",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+	<div class="sample-demo">
+		
+		<p> The setting will show up here:</p>
+		<div v-html="settings.text"></div>
+		
+	</div>
+</template>

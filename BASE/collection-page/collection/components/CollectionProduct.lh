@@ -1,0 +1,310 @@
+<template>
+    <div class="lh-product-collection-com__wrapper">
+        <div class="lh-row" v-html="liquid('product_items')">
+        </div>
+        <div class="lh-row" >
+            <div class="lh-col-md-12 lh-collection-pagination" v-html="liquid('pagination')"></div>
+        </div>
+    </div>
+</template>
+@javascript
+    var $this = jQuery(this),
+        $forms = $this.find('.lh-product-item__form');
+        function resizeImage(t, r) {
+            try {
+				if (t.indexOf('cdn.shopify.com') === -1)
+					return t;
+                if (!r || "original" == r ||  "full" == r || "master" == r)
+                    return t;
+                var o = t.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)((\#[0-9a-z\-]+)?(\?v=.*)?)?$/igm);
+		        if (null == o)
+		            return null;
+		        var i = t.split(o[0])
+		          , x = o[0];
+		        return i[0] + "_" + r + x;
+            } catch (o) {
+                return t
+            }
+        }
+        function swapImage(selector,src){
+            switch(settings.crop_type)
+            {
+                case 'auto':
+                        selector.attr('src',resizeImage(src,'480x')).attr('srcset',`${resizeImage(src,'640x')} 480w, ${resizeImage(src,'480x')} 640w, ${resizeImage(src,'900x')} 900w, ${resizeImage(src,'480x')} 1080w`)
+                    break;
+                case 'full':
+                        selector.attr('src', src);
+                    break;
+                case 'custom':
+                        selector.attr('src', resizeImage(src,`${settings.crop_size}_crop_${settings.crop_position}`));
+                    break;
+                default: 
+                    break;
+            }
+        }
+        function selectCallback(variant, selector) {
+            let $form = jQuery(selector.variantIdField[0].closest('form')),
+            $cartButton = $form.find('.lh-quick-shop-submit'),
+            $priceBox = $form.find('.lh-product-prices'),
+            money_format = decodeURIComponent($form.data('moneyFormat')).replace(/\+/g, ' ');
+            if(variant)
+            {
+                if(variant.featured_image)
+                {
+                    swapImage( $form.find('.lh-prduct-secondary-image img'), variant.featured_image.src);
+                }
+                let isSale = variant.price  < variant.compare_at_price;
+                
+                let priceText = `<ins>${window.HUB.formatMoney(variant.price, money_format)}</ins>`;
+                if(isSale)
+                {
+                    priceText += `<del>${window.HUB.formatMoney(variant.compare_at_price, money_format)}</del>`;
+                }
+
+                $priceBox.html(priceText);
+                
+                if(variant.available)
+                {
+                    $cartButton.text($cartButton.data('addCart'))
+                }
+                else 
+                {
+                    $cartButton.text($cartButton.data('soldout'))
+                }
+            }
+            else 
+            {
+                $priceBox.html('');
+                $cartButton.text($cartButton.data('unavailable'))
+            }
+
+        }
+        $forms.each(function(){
+            var $form = jQuery(this),
+            form_id = $form.data('form-id'),
+            $jsonData = $this.find('#lh-product-json-'+ form_id);
+            if($jsonData.length)
+            {
+                let product = null;
+                try{
+                    product = JSON.parse($jsonData.html());
+                }catch(e){
+                    console.log(e)
+                }
+                if(!product || !product.id) return 1;
+
+                let selector_id = 'lh-product-select-'+ form_id;
+                var productSelect = new window.Shopify.OptionSelectors( selector_id, {
+                    product: product,
+                    onVariantSelected: selectCallback,
+                    enableHistoryState: (window.LAYOUTHUB_LIVE) ? false : true
+                });
+                $form.find('#' + selector_id).on('swatch', function(evt, vid) {
+                    productSelect.selectVariant(evt.target.getAttribute('vid'));
+                });
+                $form.find('.lh-swatch-item').on('click', function() {
+                    var _this = $(this);
+                    if (!_this.hasClass('active') ) {
+                        _this.siblings('li').removeClass('active');
+                        _this.addClass('active');
+                        var index = _this.closest('.lh-swatch-index').attr('data-option-index');
+                        $form.find('select#' + selector_id + '-option-' + index).val(_this.data('value')).trigger('change');
+                    }
+                });
+
+
+            }
+        });
+
+        $this.find('.lh-quick-shop-btn').on('click', function(){
+            var $form = jQuery(this).closest('form');
+            $form.find('.lh-product-form__swatches').toggleClass('lh-quick-shop-active');
+            let index = parseInt($form.find('.lh-swatch-index').data('optionIndex')) + 1;
+            $form.find('.lh-product-form__variants .selector-wrapper:nth-child('+index+')').hide();
+        });
+        
+         
+    
+@endjavascript
+
+<style>
+    .lh-collection-page__product-item {
+  padding: 5px;
+}
+.lh-collection-page__product-item .lh-product-prices ins {
+  display: inline-block;
+  padding: 5px !important;
+  color: red;
+}
+.lh-collection-page__product-item .lh-product-prices del {
+  display: inline-block;
+  padding: 5px !important;
+}
+.lh-collection-page__product-item .lh-product-actions {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  inset: 0;
+  width: 100%;
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  transition: 0.3s;
+}
+.lh-collection-page__product-item .lh-buttons-container > button, .lh-collection-page__product-item .lh-buttons-container > a, .lh-collection-page__product-item .lh-buttons-container > div {
+  display: flex !important;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  display: block;
+  align-self: center;
+  max-width: 150px;
+  padding: 10px;
+  font-weight: 600;
+  background: #fff;
+  color: #333;
+  margin-top: 5px;
+  cursor: pointer;
+}
+.lh-collection-page__product-item .lh-swatch-items {
+  text-align: center;
+  margin: auto;
+}
+.lh-collection-page__product-item .lh-buttons-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  vertical-align: middle;
+  width: 100%;
+  align-content: center;
+  align-items: flex-start;
+  /* align-self: center; */
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+.lh-collection-page__product-item .lh-product-swatch-wrapper {
+  position: relative;
+  display: block;
+}
+.lh-collection-page__product-item .lh-product-swatch-wrapper .lh-product-form__variants, .lh-collection-page__product-item .lh-product-swatch-wrapper .lh-product-form__actions {
+  display: none;
+}
+.lh-collection-page__product-item .lh-product-swatch-wrapper .lh-product-form__swatches {
+  position: absolute;
+  width: 100%;
+  bottom: 5px;
+}
+.lh-collection-page__product-item .lh-product-swatch-wrapper .lh-product-form__swatches.lh-quick-shop-active {
+  background: #fff;
+}
+.lh-collection-page__product-item .lh-product-swatch-wrapper .lh-product-form__swatches.lh-quick-shop-active .lh-product-form__variants:not(.lh-hide-variant-select), .lh-collection-page__product-item .lh-product-swatch-wrapper .lh-product-form__swatches.lh-quick-shop-active .lh-product-form__actions {
+  display: block;
+}
+.lh-collection-page__product-item .lh-quick-shop-submit {
+  padding: 5px 10px;
+  background: #333;
+  color: #fff;
+  font-weight: bold;
+  text-align: center;
+  margin: auto;
+  display: block;
+}
+.lh-collection-page__product-item .lh-product-image {
+  position: relative;
+}
+.lh-collection-page__product-item .lh-product-image .lh-prduct-featured-image {
+  visibility: visible;
+  opacity: 1;
+  transition: 0.3s;
+  object-fit: cover;
+}
+.lh-collection-page__product-item .lh-product-image .lh-prduct-secondary-image {
+  object-fit: cover;
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  transition: 0.3s;
+  top: 0;
+  left: 0;
+}
+.lh-collection-page__product-item:hover .lh-product-actions {
+  opacity: 1;
+  visibility: visible;
+}
+.lh-collection-page__product-item:hover .lh-prduct-secondary-image {
+  visibility: visible;
+  opacity: 1;
+}
+.lh-collection-page__product-item:hover .lh-prduct-featured-image {
+  visibility: hidden;
+  opacity: 0;
+}
+.lh-collection-page__product-item .lh-product-swatch-images {
+  display: block;
+  position: relative;
+  width: 100%;
+  padding: 5px;
+}
+.lh-collection-page__product-item .lh-product-swatch-images .lh-product-swatch-image {
+  display: inline-block;
+  padding: 3px;
+  cursor: pointer;
+  border: 2px solid #717171;
+}
+.lh-collection-page__product-item .lh-product-swatch-images .lh-product-swatch-image.active {
+  border-color: #333;
+}
+.lh-collection-page__product-item .lh-product-swatch-colors {
+  display: block; 
+  position: relative;
+  width: 100%;
+  padding: 5px;
+}
+.lh-collection-page__product-item .lh-product-swatch-colors .lh-product-swatch-color {
+  display: inline-block;
+  padding: 3px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.lh-collection-page__product-item .lh-product-swatch-colors .lh-product-swatch-color.active {
+  border-color: #333;
+}
+.lh-collection-page__product-item .lh-product-swatch-colors .lh-product-swatch-color .lh-color {
+  display: block;
+  position: relative;
+  padding: 10px;
+  border: 1px solid #eee;
+}
+.lh-collection-page__product-item .lh-product-swatch-colors .lh-product-swatch-color .lh-no-color {
+  display: block;
+  position: relative;
+  padding: 10px;
+  background-color: gray;
+  border: 1px solid #333;
+}
+
+.lh-collection-pagination{
+    display:block;
+    text-align:center;
+    margin-top:10px;
+    span{
+        &.current{
+            padding: 5px 10px;
+            border-color:#333;
+        }
+        &.current a, &:hover a {
+            border-color:#333;
+        }
+        a{
+            padding: 5px 10px;
+            border: 1px solid #cacaca;
+        }
+    }
+}
+</style>

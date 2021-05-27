@@ -1,0 +1,81 @@
+<template>
+    <div class="lh-social">
+        <div class="lh-share-on">
+            <span class="lh-title" v-html="lang(section.settings.trans_social)"></span>
+            <div class="lh-share_network">
+                <ul class="lh-social-network">
+                    <li :key="social" v-for="social in settings.socials">
+                        <a :href="renderUrl(social)" class="lh-icon-network lh-social-facebook lh-tooltip_top" data-lh-tooltip="Facebook" target="_blank">
+                            <i :class="classes(social)" class="lni"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</template>
+<script>
+    export default {
+        data(){
+            return {
+                platforms: {
+                    facebook: "https://www.facebook.com/sharer/sharer.php?u=",
+                    pinterest: "https://pinterest.com/pin/create/button/?url=",
+                    twitter: 'https://twitter.com/share?url=',
+                    tumblr: 'https://tumblr.com/widgets/share/tool?canonicalUrl='
+                }
+            }
+        },
+        methods:{
+            classes(platform){
+                switch(platform)
+                {
+                    case 'facebook':
+                    case 'twitter': 
+                    case 'pinterest':
+                    case 'tumblr':
+                        return 'lni-'+ platform;
+                    case 'mail':
+                        return 'lni-envelope';
+                    default: 
+                        return '';
+
+                }
+            },
+            renderUrl(platform){
+                
+                switch(platform)
+                {
+                   
+                    case 'pinterest':
+                        return this.platforms[platform] + this.liquid('url') + '&media=' + this.liquid('image') + '&description=';
+                    case 'twitter':
+                       return this.platforms[platform] + this.liquid('url')  + '&text=' + this.liquid('title_encode');
+                    case 'facebook':
+                    case 'tumblr':
+                        return this.platforms[platform]+ this.liquid('url');
+                    case 'mail':
+                        return 'mailto:'+ this.liquid('shop_email') +'?subject='+ this.liquid('title_encode') + '&body=Check%20this%20out:%20'+ this.liquid('url');
+                    default:
+                        return '#';
+                  
+                }
+            }
+        }
+    }
+
+</script>
+<style>
+    .lh-social-network {
+        margin-top: 10px;
+        li {
+            display: inline-block;
+            padding:5px;
+            a {
+                font-size: 30px;
+            }
+        }
+    }
+
+</style>

@@ -1,0 +1,13 @@
+ .sample-demo {
+	 padding: 0px 20px; 
+}
+ h1.y {
+	 padding: 20px;
+	 background-color: green;
+	 color: red; 
+}
+ h1.n {
+	 padding: 20px;
+	 background-color: red;
+	 color: white; 
+}

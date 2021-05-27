@@ -1,0 +1,98 @@
+<template>
+    <div class="lh-single-product__countdown" :data-trans-dd="settings.trans_label_dd" :data-trans-hh="settings.trans_label_hh" :data-trans-mm="settings.trans_label_mm" :data-trans-ss="settings.trans_label_ss">
+        <div class="lh-countdown">
+			<div class="lh-countdown-text"><p v-html="lang(settings.trans_countdown)"></p></div>
+            <div v-html="liquid('countdown')"></div>
+	   </div>
+    </div>
+</template>
+@javascript
+    var $this = jQuery(this),
+        $wrapper = $this.closest('.lh-product-single'),
+        
+        $random = $this.find('.lh-random-countdown'),
+        prefix='lh-countdown-',
+        $countdown = $this.find('.count_time'),
+        $form = $wrapper.find('.lh-product-single__form'),
+        product_id = $form.data('id'),
+        key = prefix+product_id,
+        regex_digit = new RegExp(/^-?\d*\.?\d*$/),
+        time = $countdown.html(),
+        int_time = regex_digit.test(time);
+
+        function createNewDateLoop(){
+            var d = window.localStorage.getItem(key);
+            if (!Date.parse(d) || Date.parse(d) < new Date().getTime()){
+                d = new Date();
+                d.setSeconds(d.getSeconds()+ parseInt(countdown.attr('data-loop-time')));
+                window.localStorage.setItem(key,d);
+            }
+        }
+
+        if($countdown.hasClass('lh-random-countdown'))
+        {
+
+            if(product_id)
+            {
+                var d = window.localStorage.getItem(key);
+                if (!Date.parse(d) || Date.parse(d) < new Date().getTime()){
+                    d = new Date();
+                    d.setDate(d.getDate()+ (Math.floor(Math.random() * 14) + 1));
+                    window.localStorage.setItem(key,d);
+                }
+                $countdown.html(typeof d == 'string' ? d : d.toISOString());
+            }
+        }else{
+            if(int_time){
+                $countdown.attr('data-loop-time',time);
+                if(window.LAYOUTHUB_LIVE)
+                    window.localStorage.setItem(key,'');
+                createNewDateLoop();
+                $countdown.html(window.localStorage.getItem(key));
+            }
+        }
+        let data = $this.data();
+        data = Object.assign({
+            transDd:  settings.trans_dd,
+            transHh: settings.trans_hh,
+            transMm: settings.trans_mm,
+            transSs: settings.trans_ss
+        },data)
+        var countdown_trans = {
+            with_labels: true,
+            with_separators: true,
+            separator_days: ":",
+            css_class: 'lh-countdown-timer',
+            label_dd: data.transDd,
+            label_hh: data.transHh,
+            label_mm: data.transMm,
+            label_ss: data.transSs,
+        };
+        time  = $this.find('.count_time').html();
+        jQuery.fn.countDown &&  $this.find('.count_time').countDown(countdown_trans);
+        $this.find('.count_time').on('time.elapsed',function(ev, ms){
+            if(int_time){
+                setTimeout(function(){
+                    createNewDateLoop();
+                },1000);
+            }
+            jQuery(this).hide();
+        })
+@endjavascript
+
+<style>
+    .lh-countdown-timer{
+        display: block;
+        position: relative;
+        width: 100%;
+        background: #eee;
+        padding: 5px 10px;
+        font-weight:bold;
+        .item{
+            margin-right:3px;
+        }
+        .separator{
+            padding:5px;
+        }
+    }
+</style>

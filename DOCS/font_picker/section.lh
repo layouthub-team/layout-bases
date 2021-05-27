@@ -1,0 +1,14 @@
+@schema
+{
+	"name"		: "Font Picker",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+	<div class="sample-demo">
+		<link :href="'https://fonts.googleapis.com/css?family='+settings.my_font" rel="stylesheet">
+		<h1 :style="'font-family: '+settings.my_font+'!important'">Sample Text</h1>
+	</div>
+</template>

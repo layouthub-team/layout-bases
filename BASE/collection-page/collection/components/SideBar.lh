@@ -1,0 +1,61 @@
+<template>
+    <div class="lh-sidebar-components__wrapper" v-html="liquid('sidebar')"></div>
+</template>
+<style>
+ .lh-product-item {
+display: flex;
+    position: relative;
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: stretch;
+    padding: 5px;
+}
+.lh-product-item .lh-product-image {
+    background-size:cover;
+    width:90px;
+    height:90px;
+    background-repeat:no-repeat;
+}
+
+.lh-filter-checkbox a {
+  display: inline-flex;
+}
+.lh-filter-checkbox.active a::before, .lh-filter-checkbox:hover a::before {
+  background: var(--lh-color);
+  border-color: var(--lh-color);
+}
+
+.lh-filter-checkbox a::before {
+  content: "";
+  width: 14px;
+  height: 14px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+.lh-collection-colors li{
+    display:inline-block;
+    a{
+        display:block;
+        cursor:pointer;
+        position: relative;
+        padding: 3px;
+        border: 1px solid transparent;
+        span.lh-filter-color{
+           padding:15px;
+           display:block;
+           &.lh-no-color {
+               background: rgb(217 216 226);
+           }
+        }
+    } 
+    &.active,&:hover{
+        a{
+            border-color:#333;
+        }
+    }
+}
+</style>

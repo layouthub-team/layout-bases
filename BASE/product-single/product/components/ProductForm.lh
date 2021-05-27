@@ -1,0 +1,373 @@
+<template>
+    <div class="lh-product-single__form-container">
+        <Liquid name="form_open" />
+        <!-- {% comment %} This content will remove when publish . PLEASE DO NOT REMOVE-->
+        <form class="lh-product-single__form" method="POST" accept-charset="utf-8" enctype="multipart/form-data"  action="/cart/add" :data-id="liquid('product_id')" :data-pid="liquid('product_id')" :data-money-format="liquid('money_format')"> 
+        <!--  {% endcomment %}-->
+            <div class="lh-product-form__swatches" >
+                <div v-html="liquid('swatches')"></div>
+                <div v-html="liquid('variant_selectors')"></div>
+            </div>
+            <div class="lh-product-form__variants">
+                <select class="lh-product-form__variants-select" name="id"  :id="selectId" style="display: none" v-html="liquid('product_options')"></select>
+            </div>
+            <div class="lh-product-form__quantity"  v-show="settings.enable_quantity==='yes'">
+                <label for="quantity" v-text="settings.trans_quantity"></label>
+                <div class="lh-controls">
+                    <input name="quantity" type="number" value="1" max="9999" min="1"  class="lh-product-quantity" />
+                    <button type="button" class="lh-btn-number lh-qtyminus lh-quantity-minus"  > </button>
+                    <button type="button" class="lh-btn-number lh-qtyplus lh-quantity-plus"></button>
+                </div>
+            </div>
+            <div class="lh-product-form__controls-group">
+                <a class="lh-external-link" :href="liquid('external_link')" v-if="isExternal"  v-text="lang(settings.trans_external)"></a>
+                <button name="submit" class="lh-product-form__cart-submit"  v-else type="submit" v-text="lang(settings.trans_add_to_cart)" :data-add-cart-text="lang(settings.trans_add_to_cart)" :data-pre-order-text="lang(settings.trans_pre_order)"></button>
+                 <div v-if="showPaymentButton" v-html="liquid('payment_button')"></div>
+            </div>
+        <!-- {% comment %} This content will remove when publish-->
+        </form>
+        <!--  {% endcomment %}-->
+        <Liquid name="form_close" />
+        <div class="lh-product-single__custom-html lh-custom-html-below-btn-cart" v-html="lang(settings.html_b_btn_cart)"></div>
+        <div style="display:none" v-html="liquid('product_json')"></div>
+    </div>
+</template>
+<script>
+export default {
+    computed:{
+        isExternal(){
+            return this.settings.enable_external === 'yes' && this.settings.external_link;
+        },
+        showPaymentButton(){
+            return this.settings.enable_payment_button === 'yes' && this.settings.enable_external === 'no';
+        },
+        selectId(){
+            return 'lh-product-select-'+this.liquid('product_id')+ '-' + new Date().getTime();
+        }
+    },
+    watch : {
+        'settings.product': function() {
+            this._.render();
+            
+        }
+    }
+}
+</script>
+
+@javascript 
+    var $this   = jQuery(this);
+
+    var $wrapper = $this.closest('.lh-product-single'),
+    $slider = $wrapper.find('.lh-product-single_media-items').get(0), // Product featured image slider
+    $nav    = $wrapper.find('.lh-product-single__thumbnails'),///Thumbnail of product
+    $form    = $this.find('form'),// Product form
+    $countdown = $wrapper.find('.lh-single-product__countdown'),
+    $select = $form.find('.lh-product-form__variants-select'),
+    $quantityPlus = $form.find('.lh-quantity-plus');
+    $quantityMinus = $form.find('.lh-quantity-minus');
+    id      = $form.data('id'),// Product ID
+    //product_settings = settings.product,
+    money_format = decodeURIComponent($form.data('moneyFormat')).replace(/\+/g, ' ');
+    if(window.LAYOUTHUB_LIVE && settings.enable_payment_button === 'yes' && settings.enable_external === 'no')
+    {
+        $this.find('.shopify-payment-button .shopify-payment-button__button').text('Buy it now').removeAttr('disabled')
+    }
+    (function(){
+        
+        if (!window.Shopify || !window.Shopify.OptionSelectors) return 1;
+        let jsonDom = $wrapper.find('#lh-product-json-' + id);
+        if (!id || !jsonDom) return;
+        var $product_json = null;
+        try {
+            $product_json = JSON.parse(jsonDom.html())
+        } catch (e) {};
+
+        if (!$product_json) return 0;
+
+        var $addToCart = $form.find('.lh-product-form__cart-submit'),
+            $productStatus = $wrapper.find('.lh-product-status'),
+            $priceBox = $wrapper.find('.lh-product-single__price');
+            $salePrice = $priceBox.find('lh-price'),
+            $compareAtPrice = $priceBox.find('.lh-compare-at-price'),
+            $sku = $form.find('.lh-sku'),
+            $quantity = $form.find('.lh-product-quantity'),
+            selector_id = $select.attr('id');
+
+        if(!selector_id) return true;
+        //Render OptionSelectors;
+        var productSelect = new window.Shopify.OptionSelectors( selector_id, {
+            product: $product_json,
+            onVariantSelected: selectCallback,
+            enableHistoryState: (window.LAYOUTHUB_LIVE) ? false : true
+        });
+        
+        $form.find('#' + selector_id).on('swatch', function(evt, vid) {
+            productSelect.selectVariant(evt.target.getAttribute('vid'));
+        });
+
+        $quantityMinus.on('click', function(){
+            $quantity.get(0).stepDown();
+        });
+         $quantityPlus.on('click', function(){
+            $quantity.get(0).stepUp();
+        });
+
+        function selectCallback(variant, selector) {
+
+            if (variant) {
+                try {
+
+                    if (variant.featured_image && $slider.swiper) {
+                        var index = $nav.find('.lh-product-single__thumbnail[data-variant_id*="' + variant.id + '"]').index() ,
+                            current = $slider.swiper.realIndex;
+                        if (index != current)
+                            $slider.swiper.slideTo(index, 200);
+                        else
+                            throw "not change";
+                    } else {
+                        throw 'erorr';
+                    }
+                } catch (e) {
+                    $form.removeClass('lh-onchange-variant');
+                }
+
+                var inventory_quantity = variant.inventory_quantity,
+                policy = variant.inventory_policy,
+                isSale = variant.available && (variant.price < variant.compare_at_price),
+                max = 9999;
+                if(variant.inventory_management && variant.inventory_policy == 'deny'){
+                    max = variant.inventory_quantity;
+                }else
+                {
+                    max = 0;
+                }
+
+
+                if (inventory_quantity < 1 && policy == 'continue') {
+                    $addToCart.addClass('lh-pre-order').text($addToCart.data('preOrder'));
+                    max = 999999;
+                } else {
+                    $addToCart.removeClass('lh-pre-order').text($addToCart.data('addCart'));
+                }
+                
+                var quantity = parseInt($quantity.val());
+                if(quantity> max) 
+                    quantity = max;
+
+                $quantity.attr('max',max).val(quantity);
+
+                $addToCart.removeAttr('disabled');
+                $salePrice.html(window.HUB.formatMoney(variant.price, money_format));
+                $sku.html(variant.sku ? variant.sku : "N/A");
+
+                	
+
+
+                if(variant.available)
+                {
+                    $productStatus.hide();
+                    if(settings.show_countdown_on_sale === 'no')
+                    {
+                        $countdown.show();
+                    }
+                    else 
+                        $countdown.hide();
+                }
+                else 
+                {
+                    $addToCart.attr('disabled', 'disabled');
+                    $productStatus.show().html(`<span class="lh-sold-out-text">${$productStatus.data('outStock')}</span>`);
+                }
+                if (isSale) {
+                     $countdown.show();
+                    $compareAtPrice.css('display', 'block').html(window.HUB.formatMoney(variant.compare_at_price, money_format));
+                    let salePercent = ((100/variant.compare_at_price) * (variant.compare_at_price- variant.price)).toFixed(2),
+                        saleText = $productStatus.data('sale');
+                        saleText = saleText ? saleText.replace(/\%s/g,salePercent):'';
+                        $productStatus.show().html(`<span class="lh-sale-text">${saleText}</span>`);
+                } else {
+                    $compareAtPrice.css('display', 'none');
+                    $productStatus.hide();
+                    if(settings.show_countdown_on_sale === 'no')
+                    {
+                        $countdown.show();
+                    }
+                    else 
+                        $countdown.hide();
+                }
+                
+                if (variant.options.length) {
+                    for (var i = 0; i < variant.options.length; i++) {
+                        var wrap_swatch = $form.find('.lh-swatch-variations[data-option-index="' + i + '"]');
+                        wrap_swatch.find(`[data-value='${variant.options[i].replace(/'/g, "'")}']`).addClass('active').siblings().removeClass('active');
+                    }
+                }
+            } else {
+                $productStatus.show().html(`<span class="lh-product-unavailable">${$productStatus.data('unavailable')}</span>`);
+                $form.removeClass('lh-onchange-variant');
+                if(settings.show_countdown_on_sale === 'no')
+                {
+                    $countdown.show();
+                }
+                else 
+                    $countdown.hide();
+            }
+            
+        };
+        $form.find('.lh-swatch-item').on('click', function() {
+            var _this = $(this);
+            if (!_this.hasClass('active') && !$form.hasClass('lh-onchange-variant')) {
+                $form.addClass('lh-onchange-variant');
+                _this.siblings('li').removeClass('active');
+                _this.addClass('active');
+                var index = _this.closest('.lh-swatch-index').attr('data-option-index');
+                $this.find('select#' + selector_id + '-option-' + index).val(_this.data('value')).trigger('change');
+            }
+        });
+
+
+    })()
+
+ 
+
+
+@endjavascript
+
+<style>
+
+        &{
+            margin-top:10px;
+        }
+        .lh-product-form__option-title{
+            font-weight: bold;
+        }
+        .lh-external-link{
+            display: block;
+            position: relative;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .lh-product-form__cart-submit{
+            display: block;
+            position: relative;
+            padding: 10px;
+            background: var(--lh-color);
+            color: #fff;
+            text-align: center;
+            font-weight: bold;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .shopify-payment-button {
+            margin:0;
+            margin-top:5px;
+        }
+        .selector-wrapper{
+            display:none;
+        } 
+        .lh-swatch-items li{
+            display: inline-block;
+            width: 30px;
+            display: inline-block;
+            width: 40px;
+            padding: 6px;
+            border-radius: 50%;
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .lh-wrap-combobox li{
+            cursor: pointer;
+            display: inline-block;
+            padding: 8px 5px !important;
+            background: #dedede;
+            margin: 3px;
+            border:1px solid transparent;
+        }
+        .lh-wrap-combobox li.active{
+            border-color: #333;
+        }
+        .lh-swatch-items li.active{
+            border-color: gray;
+            cursor: default;
+        } 
+        .lh-product-form__quantity {
+            display: block;
+            position: relative;
+            .lh-controls{
+                display: block;
+                position: relative;
+                max-width:200px;
+            }
+            input{
+                -webkit-appearance: none; 
+                margin: 0; 
+                text-align: center;
+                width: 100%;
+                padding: 5px 40px;
+                border-radius: 3px;
+                font-style: normal;
+                color: rgb(34, 34, 34);
+                background: rgb(255, 255, 255);
+                border: 1px solid rgb(221, 221, 221);
+                font-weight: 400;
+                letter-spacing: 0px;
+                font-family: inherit;
+                font-size: calc(var(--lh-font-size) * 1);
+                line-height: 1.75;
+                outline: none !important;
+            }
+            .lh-btn-number{
+                    position: absolute;
+                    top: 0px;
+                    bottom: 0px;
+                    width: 40px;
+                    font-size: calc(var(--lh-font-size) * 0.00);
+                    z-index: 1;
+                    transition: all 0.3s ease 0s;
+                    cursor: pointer;
+                    color: rgb(196, 196, 196);
+                    text-align: center;
+                    border: 0px;
+                    &:before {
+                        position: absolute;
+                        content: "";
+                        top: 50%;
+                        right: 0px;
+                        bottom: 0px;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        height: 1px;
+                        background: currentcolor;
+                        width: 15px;
+                    }
+                    &:after{
+                        position: absolute;
+                        content: "";
+                        top: 50%;
+                        right: 0px;
+                        bottom: 0px;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        height: 1px;
+                        background: currentcolor;
+                        width: 15px;
+                    }
+            }
+            .lh-quantity-minus{
+                left:0;
+            }
+            .lh-quantity-plus{
+                right:0;
+                &:before {
+                    transform: translate(-50%, -50%) rotate(90deg) !important;
+                }
+            }
+        }
+        
+ 
+    
+</style>

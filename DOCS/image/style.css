@@ -1,0 +1,8 @@
+ .sample-demo {
+	 padding: 20px; 
+}
+ ul li {
+	 display: inline-block;
+	 list-style: none;
+	 border: 1px solid rgb(204, 204, 204); 
+}

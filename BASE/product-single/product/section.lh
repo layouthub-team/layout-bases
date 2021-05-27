@@ -1,0 +1,137 @@
+@schema
+{
+    "name": "Product single",
+    "author": "Layouthub Team",
+    "website": "https://www.layouthub.com",
+    "version": "2.0",
+    "category": "Product single",
+    "platform": "shopify",
+    "vendors":  [
+        "js_swiper_slider",
+        "css_swiper_slider",
+        "css_layouthub_base",
+        "js_option_selections",
+        "js_jquery_zoom",
+        "js_jquery_countdown",
+        "css_line_icon"
+    ],
+    "dev": "LayoutHub core team"
+}
+@endschema
+
+<template>
+      <div class="lh-wrapper lh-product-single" >
+        <Liquid name="assign_product" />
+        <div class="lh-row">
+            <div class="lh-col-md-6 lh-product-single__media-group lh-col-sm-12" >
+                 <ProductMedia />
+            </div>
+            
+            <div class="lh-col-md-6 lh-col-sm-12">
+                <div class="lh-product-single__meta">
+                    <h1 class="lh-product-single__title" v-html="liquid('title')"></h1>
+                    <div class="lh-wrap-product-rating" :data-app-review="liquid('app_review')">
+                        <div v-if="settings.use_rating === 'yes'" v-html="liquid('rating')"></div>
+                        <div class="lh-fake-rating lh-tooltip" v-if="settings.use_rating === 'yes'"  style="display:none" title="This is demo ratings. The real ratings will show when publish">
+                            <ul class="lh-rating-stars">
+                                <li><i class="lni lni-star-filled"></i></li>
+                                <li><i class="lni lni-star-filled"></i></li>
+                                <li><i class="lni lni-star-filled"></i></li>
+                                <li><i class="lni lni-star-filled"></i></li>
+                                <li><i class="lni lni-star"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="lh-product-single__price" v-html="liquid('prices')"></div>
+                    <div class="lh-product-status" :data-sale="lang(settings.trans_sale)" :data-out-stock="lang(settings.trans_outstock)" :data-unavailable="lang(settings.trans_unavai)"></div>
+                    <div class="lh-product-single__custom-html lh-custom-html-below-price" v-html="settings.html_b_price"></div>
+                    <ProductCountdown v-if="settings.use_countdown === 'yes'"/>
+                    <ProductForm />
+                    <ProductSocial  v-if="section.settings.show_social === 'yes'"/>
+                </div>
+            </div>
+            <div class="lh-col-md-12">
+                <ProductTabs />
+            </div>
+            
+        </div>
+    </div>
+</template>
+ 
+<style>
+ 
+    .lh-product-status span{
+        padding: 0;
+        margin: 0;
+        text-align: left;
+        font-weight: bold;
+    }
+    .lh-product-price__container .lh-product-price{
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .lh-product-single__price .lh-price {
+        color:red;
+        font-weight: bold;
+    }
+    .lh-product-unavailable{
+        color:red;
+        font-weight:bold;
+    }
+    .lh-sold-out-text{
+        color:gray;
+    }
+    .lh-sale-text{
+        color:red;
+    }
+    .lh-fake-rating .lh-rating-stars {
+        display:block;
+        padding:0 5px;
+        width:100%;
+        li{
+           display:inline-block;
+           color:#ffc107;
+           font-size:15px;
+        }
+    }
+
+    .lh-tooltip {
+        display: block;
+        position: relative;
+        }
+        .lh-tooltip:hover:after{
+        display: -webkit-flex;
+        display: flex;
+        -webkit-justify-content: center;
+        justify-content: center;
+        background: #444;
+        border-radius: 8px;
+        color: #fff;
+        content: attr(title);
+        font-size: 16px;
+        padding: 13px;
+        width: 220px;
+        position:absolute;
+        bottom:120%;
+        left:-10%;
+        z-index:99;
+        }
+        .lh-tooltip:hover:before{
+        border: solid;
+        border-color: #444 transparent;
+        border-width: 12px 6px 0 6px;
+        content: "";
+        left: 30px;
+        bottom: 10px;
+        position: absolute;
+        z-index:99;
+        }
+</style>
+
+@javascript
+    var $this = jQuery(this);
+    if(window.LAYOUTHUB_LIVE && settings.use_rating === 'yes' )
+    {
+        $this.find('.lh-fake-rating').show();
+    }
+@endjavascript

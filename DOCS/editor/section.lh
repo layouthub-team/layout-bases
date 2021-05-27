@@ -1,0 +1,11 @@
+@schema
+{
+	"name"		: "Text Editor",
+	"author"	: "LayoutHub Team",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+	<div class="sample-demo" v-html="settings.content"></div>
+</template>

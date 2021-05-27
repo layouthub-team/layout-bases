@@ -1,0 +1,12 @@
+@schema
+{
+	"name"		: "Header",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+
+<div class="sample-demo">
+The text demo
+</div>

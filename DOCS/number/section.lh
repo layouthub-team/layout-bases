@@ -1,0 +1,14 @@
+@schema
+{
+	"name"		: "Number",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+
+<div class="sample-demo">
+	
+	<span style="font-size: @attr(section.settings.size)">The sample text</span>
+	
+</div>

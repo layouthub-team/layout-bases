@@ -1,0 +1,15 @@
+@schema
+{
+	"name"		: "Single image",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+	<div class="sample-demo">
+		<h1>This is single image: {{settings.img}}</h1>
+		<p v-html="settings.img"></p>
+		
+	</div>
+</template>

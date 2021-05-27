@@ -1,0 +1,45 @@
+@schema
+{
+    "name": "Collection page",
+    "author": "Layouthub Team",
+    "website": "https:\/\/www.layouthub.com",
+    "version": "1.0",
+    "category": "Collection",
+    "platform": "shopify",
+    "vendors":  [
+        "css_layouthub_base",
+        "js_option_selections",
+        "js_jquery_countdown"
+    ],
+    "dev": "daniel"
+} 
+@endschema
+<template>
+    <div class="lh-collection-page lh-wrapper">
+        <Liquid name="liquid" />
+        <div class="lh-row">
+            <div class="lh-col-md-12">
+                <CollectionHeader v-if="settings.show_header === 'yes'" />
+            </div>
+           <div class="lh-col-md-3 lh-col-sm-12 lh-collection-page__sidebar" v-if="settings.use_sidebar === 'yes' ">
+               <div class="lh-row lh-collection-sidebar__components">
+                   <SideBar  />
+                </div>
+            </div>
+            <Liquid name="start_paginate"/>
+            <div class="lh-col-sm-12 lh-collection-page__main" :class="classList">
+                <CollectionProduct /> 
+            </div>
+            <Liquid name="end_paginate" />
+        </div>
+    </div>
+</template>
+<script>
+    export default{
+        computed:{
+            classList(){
+                return this.settings.use_sidebar === 'yes' ? 'lh-col-md-9' : 'lh-col-md-12';
+            }
+        }
+    }
+</script>

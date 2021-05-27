@@ -1,0 +1,12 @@
+<div class="cl-bg-shop_now" style="background: @print(section.settings.bg_shop_sale_off)">
+  <div class="container">
+    <div class="row">
+      <div class="cl-meta-function offset-lg-2 col-md-12">
+        <div class="cl-meta-shop_now-title">
+          @print(section.settings.text_sale)
+        </div>
+        <a href="@print(section.settings.text_link_bt_shop_sale)" class="cl-bt-shop_now" title="">@print(section.settings.title_bt_shop_sale)</a>
+      </div>
+    </div>
+  </div>
+</div>

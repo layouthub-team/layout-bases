@@ -1,0 +1,12 @@
+@schema
+{
+	"name"		: "Block Editor",
+	"author"	: "LayoutHub Team",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+
+<div class="sample-demo" style="width: 1200px;margin: 0 auto;">
+@blocks(section.settings.content)
+</div>

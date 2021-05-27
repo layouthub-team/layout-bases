@@ -1,0 +1,8 @@
+<template>
+	<h1 class="y" v-if="settings.toggle == 'yes'">
+		Executable code for YES
+	</h1>
+	<h1 class="n" v-else>
+		It changes when the setting value changes
+	</h1>
+</template>

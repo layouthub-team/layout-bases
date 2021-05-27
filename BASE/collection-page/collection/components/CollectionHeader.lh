@@ -1,0 +1,43 @@
+<template>
+    <div class="lh-collection-header" :class="classList" :style="background">
+        <h1 v-html="liquid('collection_title')"></h1>
+        <p v-html="liquid('collection_description')"></p>
+    </div>
+<script>
+</template>
+    export default{
+        computed:{
+            background: function(value){
+                if(this.settings.use_custom_banner === 'yes')
+                {
+                    return `background: ${this.settings.header_banner}`;
+                }
+                return  `background-image: url('${this.liquid('collection_image')}')` 
+            },
+            classList: function(){
+                return  this.settings.use_custom_banner === 'yes' ?  'lh-collection-banner'  : '';
+            }
+        }
+    }
+</script>
+<style>
+    &{
+        min-height: 300px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-content: center;
+        justify-content: center;
+        align-items: center;
+        color: #111;
+        &.lh-collection-banner{
+            background-size:cover;
+            background-repeat:no-repeat;
+        }
+        h1{
+            color:#111;
+            font-weight:bold;
+        }
+
+    }
+</style>

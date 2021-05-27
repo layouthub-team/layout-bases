@@ -1,0 +1,37 @@
+
+<div class="version-4">
+	
+	<p> Print out the computed: @print(combined) </p>
+
+	@for(section.settings.items as item)
+		<p> Print out the method: @callme(item) </p>
+	@endfor
+	
+</div>
+
+@register
+{
+	schema: {
+		"name"		: "Input Text",
+		"author"	: "LayoutHub",
+		"website"	: "https://www.LayoutHub.com",
+	},
+	config: {
+		id: '',
+		background: '',
+		css: '',
+		js: '',
+		visibility: true
+	},
+	computed: {
+		combined () {
+			return this.get('section.settings.one')+' - '+this.get('section.settings.two');
+		}
+	},
+	methods: {
+		callme(item) {
+			return 'item name: '+item.name;
+		}
+	}
+}
+@endregister

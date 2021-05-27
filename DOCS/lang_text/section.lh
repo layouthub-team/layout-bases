@@ -1,0 +1,14 @@
+@schema
+{
+	"name"		: "Lang Text",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+
+<div class="sample-demo">
+	
+	<p> The setting will show up here: @text('This is my text') @print(section.settings.title) </p>
+	
+</div>

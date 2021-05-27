@@ -1,0 +1,15 @@
+@schema
+{
+	"name"		: "Checkbox Radio",
+	"author"	: "LayoutHub Team",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+<div class="sample-demo">
+	
+	Your dropdown value: {{settings.items}}
+	
+</div>
+</template>

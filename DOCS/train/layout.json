@@ -1,0 +1,16 @@
+{
+    "name": "Keyframe error",
+    "author": "LayoutHub",
+    "website": "https://www.LayoutHub.com",
+    "version": "1.0",
+
+    "sections": ["banner_train"],
+
+    "theme": {
+        "font_family": "Open Sans",
+        "color": "#545454",
+        "color_highlight": "#00BCD4",
+        "font_size": "14",
+        "typo": []
+    }
+}

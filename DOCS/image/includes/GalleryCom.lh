@@ -1,0 +1,10 @@
+<template>
+	<div>
+		<div v-html="settings.image"></div>
+		<ul>
+			<li v-for="(img, i) in settings.images" :key="i">
+				<img :src="img.value" width="250" />
+			</li>
+		</ul>
+	</div>
+</template>

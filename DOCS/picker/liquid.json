@@ -1,0 +1,19 @@
+{
+	"menu" :{
+		"raw":<<EOF
+			
+			@if(section.settings.menu)
+				{% assign menu  =  linklists['@print(section.settings.menu)'] %}
+				Menu name: {{ menu.title }}
+				{% for link in menu.links %}
+				  <a href="{{ link.url }}"
+				    {% if link.current %}aria-current="page" class="highlight"{% endif %}
+				  >
+				   {{ link.title }}
+			  </a>
+			{% endfor %}
+			@endif
+		EOF,
+		"content":"Default value"
+	}
+}

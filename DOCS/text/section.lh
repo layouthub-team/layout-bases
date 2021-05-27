@@ -1,0 +1,15 @@
+@schema
+{
+	"name"		: "Input Text",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+	<div class="sample-demo">
+		
+		<p> The setting will show up here: {{section.settings.title}} </p>
+		
+	</div>
+</template>

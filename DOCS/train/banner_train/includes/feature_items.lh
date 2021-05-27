@@ -1,0 +1,19 @@
+<div class="cl-related-product cl-featured-product">
+  <div class="container">
+    <div class="row">
+      <div class="cl-section-related-title col-lg-12">
+        <h3>FEATURED ITEMS</h3>
+        <span class="cl-line"></span>
+      </div>
+      <div class="cl-product-wrapper col-sm-12">
+        <div class="cl-product-listing row">
+          @liquid('product_collection')
+
+        </div>
+      </div>
+      <div class="cl-load_more-product col-md-12">
+        <a href="" class="cl-load_more-bt" title="">SHOW MORE</a>
+      </div>
+    </div>
+  </div>
+</div>

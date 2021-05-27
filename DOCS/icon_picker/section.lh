@@ -1,0 +1,18 @@
+@schema
+{
+	"name"		: "Icon Picker",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com",
+	"vendors"	: {
+		"fa-solid" : "assets/fonts/fa-solid.css"
+	}
+}
+@endschema
+
+<template>
+<div class="sample-demo">
+	
+	<i :class="settings.my_icon" style="font-size: 30px;"></i>
+	
+</div>
+</template>

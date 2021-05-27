@@ -1,0 +1,15 @@
+@schema
+{
+	"name"		: "Number Slider",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+<div class="sample-demo">
+	
+	<span :style="'font-size: '+settings.size+'px'">The sample text</span>
+	
+</div>
+</template>

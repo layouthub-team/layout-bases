@@ -1,0 +1,13 @@
+    <div class="cl-grid_shop-gender">
+      <div class="container">
+        <div class="row">
+          @for(section.settings.group_banner_gender as $k => banners)
+          <div class="cl-grid-content-gender cl-grid_img-left col-lg-6">
+            <div class="cl-grid-image-gender cl-male" style="background: @print(banners.banner_img)">
+              <a href="@print(banners.text_link_bt)" class="cl-link-shop_gender" title="">@print(banners.title_bt_banner)</a>
+            </div>
+          </div>
+          @endfor
+        </div>
+      </div>
+    </div>

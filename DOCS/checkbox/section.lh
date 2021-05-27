@@ -1,0 +1,25 @@
+@schema
+{
+	"name"		: "Checkbox List",
+	"author"	: "LayoutHub Team",
+	"website"	: "https://www.LayoutHub.com",
+	"configs"	: {
+		"desktop" : {
+			"section_box" : {
+				"margin" : {
+					"top" : "10px"
+				}
+			}
+		}
+	}
+}
+@endschema
+
+<template>
+<div class="sample-demo">
+	<ul>
+		<li v-for="(item, i) in settings.items" :key="i">{{item}}</li>
+		<p v-if="settings.items.length == 0">No items!</p>
+	</ul>
+</div>
+</template>

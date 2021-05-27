@@ -1,0 +1,71 @@
+<template>
+    <div class="lh-product-single__media-wrapper lh-row">
+        <div  class="lh-product-single_media-items lh-col-md-12 swiper-container">
+            <div class="swiper-wrapper" :class="settings.use_zoom === 'yes'?'lh-enable-zoom':''" v-html="liquid('product_media')"></div>
+        </div>
+        <div class="lh-col-md-12 lh-product-single__thumbnails swiper-container">
+            <div class="swiper-wrapper" v-html="liquid('product_thumbnails')" ></div>
+        </div>
+        <div class="lh-product-single__custom-html lh-custom-html-below-image" v-html="lang(settings.html_b_image)"></div>
+    </div>
+</template>
+
+@javascript
+    var $this = jQuery(this),$form = $this.closest('.lh-product-single').find('.lh-product-single__form');
+    
+    let zoomConfig = {responsive:true,scrollZoom: true };
+    if(window.Swiper)
+    {
+        var $nav = $this.find('.lh-product-single__thumbnails'),
+            $for = $this.find('.lh-product-single_media-items') ;
+         
+        var nav = new Swiper($nav.get(0), {
+            spaceBetween: 10,
+            slidesPerView: 4,
+            freeMode: true,
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+        });
+        window.slider = new Swiper($for.get(0) , {
+            spaceBetween: 10,
+            navigation: {
+            
+            },
+            thumbs: {
+                swiper: nav,
+            },
+            on:{
+                beforeSlideChangeStart: function(slider){
+                    //Destroy zoom
+                    if(settings.use_zoom === 'yes')
+                    {
+                        $this.find('.lh-zoom-enabled').map(function(){
+                            jQuery(this).removeClass('lh-zoom-enabled').data('ezPlus').destroy()
+                        });
+                    }
+                },
+                slideChange: function(){
+                    nav.slideTo(slider.realIndex,300,false);
+                    var vid = slider.slides[slider.activeIndex].dataset.variant_id +'';
+                    if (vid) {
+                        var id = $form.find('[name="id"]').val();
+                        if(!id || !vid.includes(id.toString()))
+                            $form.find('[name="id"]').attr('vid',parseInt(vid.split(',')[0]))[0].dispatchEvent(new Event('swatch'));
+                    }
+                },
+                slideChangeTransitionEnd: function(slider){
+                    nav.update();
+                    $form.removeClass('lh-onchange-variant');
+                    
+                    if(settings.use_zoom === 'yes')
+                        jQuery(slider.slides[slider.activeIndex]).find('img').addClass('lh-zoom-enabled').ezPlus(zoomConfig);
+                     
+                }
+            }
+        });
+         if(settings.use_zoom === 'yes')
+            jQuery(slider.slides[slider.activeIndex]).find('img').ezPlus(zoomConfig);
+        
+    }
+    
+@endjavascript

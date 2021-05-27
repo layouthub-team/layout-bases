@@ -1,0 +1,21 @@
+@schema
+{
+	"name"		: "Image Library",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+	<div class="sample-demo">
+		<h3 v-if="settings.image !== ''">No image selected</h3>
+		<h1>Single image</h1>
+		<p>
+			<img :src="settings.image" width="250" />
+		</p>
+		<h1>Multiple images</h1>
+		
+		<GalleryCom />
+		
+	</div>
+</template>

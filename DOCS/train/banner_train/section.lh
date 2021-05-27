@@ -1,0 +1,20 @@
+@schema
+{
+"name" : "First Section",
+"author" : "LayoutHub Team",
+"website" : "https://www.LayoutHub.com",
+"version" : "1.0",
+"vendors" : ["assets/bootstrap.min.css"],
+"configs" : {}
+}
+@endschema
+
+<section class="cl-main-page-wrapper">
+	<div class="cl-wrapper-container">
+		<div class="cl-main-home_page">
+			 
+		  
+			@include('feature_items')
+		</div>
+	</div>
+</section>

@@ -1,0 +1,39 @@
+{
+    "name"		: "Docs",
+    "author"	: "LayoutHub Team",
+    "website"	: "https://www.LayoutHub.com",
+    "version"	: "1.0",
+    "platform"  : "shopify, wordpress",
+    "sections"	: [
+    	"text",
+    	"textarea",
+    	"editor",
+    	"dropdown",
+    	"checkbox",
+    	"radio",
+    	"toggle",
+    	"number_slider",
+    	"image",
+    	"color_picker",
+    	"icon_picker",
+    	"css_background",
+    	"picker",
+    	"group",
+    	"font_picker",
+    	"link",
+    	"single_image",
+    	"custom"
+    ], 
+    "settings" 	: {
+        "title"	: "Demo page",
+        "permalink"		: "http://dev.vn/RnD/CL/demo",
+        "description"	: "Page description"
+    },
+    
+    "theme" : {
+       "font_family"            : "Poppins",
+       "title_font_family"      : "Playfair Display",
+        "color"                 : "#0e1d44",
+        "font_size"             : "16"
+    }
+}

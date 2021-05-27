@@ -1,0 +1,17 @@
+@schema
+{
+	"name"		: "Toggle",
+	"author"	: "LayoutHub",
+	"website"	: "https://www.LayoutHub.com"
+}
+@endschema
+
+<template>
+<div class="sample-demo">
+	
+	<p>The static display value: {{settings.toggle}}</p>
+	
+	<comp />
+	
+</div>
+</template>

@@ -1,0 +1,43 @@
+{
+	"product_collection":{
+		"raw":<<EOF
+				@if(section.settings.choose_collection != '')
+					{% assign products = collections["@print(section.settings.choose_collection)"].products %}
+					{% for product in products %}
+			          <div class="col-lg-3 col-md-3 col-sm-6 cl-col-xs-6 cl-card-product">
+			            <div class="cl-product-thumb cl-item-thumb {% if product.available == false %} cl-sold_out-items {% endif %}">
+			              <a href="#" class="cl-back-image">
+			                <img class="cl-pic-1" src="{{product.featured_image | img_url: '270x'}}" alt="">
+			                {% if product.images.size > 1 %}
+			                <img class="cl-pic-2" src="{{product.images[1] | img_url:'270x'}}" alt="">
+			                {% endif %}
+			              </a>
+			              <ul class="cl-social">
+			                <li><a href="" data-lh-tooltip="Quick View"><i class="fa fa-eye" ></i></a></li>
+			                <li><a href="" data-lh-tooltip="Login to use Wishlist"><i class="fa fa-heart-o" ></i></a></li>
+			                <li><a href="" data-lh-tooltip="Add to cart"><i class="fa fa-shopping-bag" ></i></a></li>
+			              </ul>
+
+			              <span class="cl-text_note cl-sale">Sale</span>
+			              {% if product.available == false %}
+			              <span class="cl-text_note cl-sold_out">Sold Out</span>
+			              {% endif %}
+			            </div>
+			            <div class="cl-product-info">
+			              <h2 class="cl-product-name">
+			              <a href="" title="">{{product.title}}</a>
+			              </h2>
+			              <div class="cl-clearfix"></div>
+			              <span class="cl-price">
+			                <ins class="cl-ProductPrice">
+			                	<span class="cl-money">{{product.price | money}}</span>
+			                </ins>
+			              </span>
+			            </div>
+			          </div>
+					{% endfor %}
+				@endif
+		EOF,
+		"content":"Default colection ..."
+	}
+}

@@ -1,0 +1,100 @@
+<template>
+    <div class="lh-product-single__tabs-wrapper">
+        <div class="lh-product-tabs__nav" v-if="showTabs">
+            <div class="lh-product-tab__nav-item" :class="{'active': index === 0}" v-for="(tab,index) in settings.tabs" :data-target="'#' + tab.type +'-'+ index" :key="'nav-'+tab.type">
+                <span>{{ tab.settings.title}}</span>
+            </div>
+            <div class="lh-product-tab__nav-item-has-child" v-if="settings.auto_tab === 'yes'" v-html="liquid('description_tabs_title')"></div>
+        </div>
+        <div class="lh-product-tabs__content" v-if="showTabs">
+            <div class="lh-product-tab-content" v-for="(tab,index) in settings.tabs" :key="index+tab.type"  :id="tab.type +'-' + index" :class="[tab.type,index === 0 ? 'active':'']">
+                <div v-if="tab.type ==='description'" v-html="liquid('description')"></div>
+                <div v-else-if="tab.type ==='addition_information'" v-html="lang(tab.settings.addition_infor)"></div>
+                <div v-else-if="tab.type ==='review'">
+                    <div v-html="liquid('form_reviews')">
+                    </div>
+                    <div class="lh-form-reviews-fake" style="display:none" :data-app="liquid('app_review')"></div>
+                </div>
+                <div v-else-if="tab.type ==='product_attributes'" v-html="liquid('attributes')"></div>
+                <div v-else-if="tab.type ==='liquid'" v-html="liquid('liquid')"></div>
+                <div v-else-if="tab.type ==='faq'" v-html="liquid('faq')"></div>
+            </div>
+            <div  class=""  v-if="settings.auto_tab === 'yes'"  v-html="liquid('description_tabs_content')">
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default {
+        computed:{
+            showTabs(){
+                return this.settings.tabs.length || this.settings.auto_tab==='yes';
+            }
+        }
+    }
+</script>
+@javascript
+    var $this = jQuery(this),
+    $tabContents = $this.find('.lh-product-tabs__content'),
+    $nav = $this.find('.lh-product-tabs__nav');
+    $nav.on('click','.lh-product-tab__nav-item', function(e){
+        e.preventDefault();
+        
+        var _this = jQuery(this),target = _this.data('target');
+        $nav.find('.lh-product-tab__nav-item.active').removeClass('active')
+        _this.addClass('active');
+        $tabContents.find('.lh-product-tab-content.active').removeClass('active')
+        $tabContents.find(target).addClass('active');
+    });
+    if(window.LAYOUTHUB_LIVE)
+    {
+        $this.find('.lh-form-reviews-fake').show();
+    }
+@endjavascript
+
+<style>
+    &{
+        display: block;
+        width: 100%;
+        position:relative;
+        background: #f3f3f3;
+        border: 1px solid #dee6ea;
+    }
+    .lh-product-tabs__nav{
+        width:100%;
+        background:#dedede;
+        display: block;
+        border-bottom: 1px solid white;
+        .lh-product-tab__nav-item-has-child{
+            display:inline-block;
+        }
+        
+        .lh-product-tab__nav-item{
+            cursor:pointer;
+            padding: 10px 20px;
+            display:inline-block;
+            background:#eee;
+            &.active{
+                background: #333;
+                color:#fff;
+                cursor:default;
+                pointer:none;
+            }
+        }
+    }
+    .lh-product-tabs__content{
+        display:block;
+        position:relative;
+        padding:10px;
+        width: 100%;
+        height:auto;
+        .lh-product-tab-content{
+            display:none;
+            &.active{
+                display:block;
+            }
+            
+        }
+    }
+
+</style>
