@@ -50,6 +50,7 @@
     {
         $this.find('.lh-form-reviews-fake').show();
     }
+
 @endjavascript
 
 <style>

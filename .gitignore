@@ -1,3 +1,6 @@
 .DS_Store
-__LH/*
+__LH
 *.hub
+/DOCS/
+/DOCS_/
+/BUG/

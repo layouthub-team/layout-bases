@@ -66,7 +66,6 @@ export default {
     $quantityPlus = $form.find('.lh-quantity-plus');
     $quantityMinus = $form.find('.lh-quantity-minus');
     id      = $form.data('id'),// Product ID
-    //product_settings = settings.product,
     money_format = decodeURIComponent($form.data('moneyFormat')).replace(/\+/g, ' ');
     if(window.LAYOUTHUB_LIVE && settings.enable_payment_button === 'yes' && settings.enable_external === 'no')
     {
@@ -135,12 +134,9 @@ export default {
                 policy = variant.inventory_policy,
                 isSale = variant.available && (variant.price < variant.compare_at_price),
                 max = 9999;
-                if(variant.inventory_management && variant.inventory_policy == 'deny'){
-                    max = variant.inventory_quantity;
-                }else
-                {
-                    max = 0;
-                }
+                if(variant.inventory_management && policy=== 'deny'){
+                    max = inventory_quantity;
+                } 
 
 
                 if (inventory_quantity < 1 && policy == 'continue') {

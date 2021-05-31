@@ -4,11 +4,11 @@
     "website": "https://www.LayoutHub.com",
     "version": "4.0",
     "sections": ["product"],
-    "theme":
-      {
-          "font_family": "Poppins",
-          "color": "#0083b0",
-          "title_font_family": "Poppins",
-          "font_size": "14"
-      }
-  }
+    "theme": {
+        "font_family": "Poppins",
+        "color": "#0083b0",
+        "title_font_family": "Poppins",
+        "font_size": "14"
+    }
+}
+ 

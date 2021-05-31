@@ -6,11 +6,11 @@
     "version": "1.0",
     "category": "Collection",
     "platform": "shopify",
-    "vendors":  [
-        "css_layouthub_base",
-        "js_option_selections",
-        "js_jquery_countdown"
-    ],
+    "vendors": {
+        "css_layouthub_base": "https://dev.layouthub.com/storage/libraries/layouthub.css",
+        "js_option_selections":"https://dev.layouthub.com/storage/libraries/option_selection.js",
+        "js_jquery_countdown":"https://dev.layouthub.com/storage/libraries/jquery.countdown.js"
+    },
     "dev": "daniel"
 } 
 @endschema
