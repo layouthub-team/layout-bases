@@ -9,7 +9,7 @@
                     {% assign collection = collections.last %}
                 @endif 
             {% endif %}
-            {% assign limit  = @print(section.settings.limit)  | plus: 0 %}
+            {% assign limit  = @print(section.settings.limit? section.settings.limit: 20)  | plus: 0 %}
             {%- assign swatch_type = '@print(section.settings.swatch_type)' -%}
             {%- assign color_names = '' | split: ',' -%}
             {%- assign color_names_downcase = '' | split: ',' -%}
@@ -70,7 +70,7 @@
                                             {%- if product.images.size > 1-%}
                                                 <div class="lh-prduct-secondary-image">
                                                     <img src="{{ secondary_image  | img_url: '480x', crop: crop_position }}" class="lh-product-image" loading="lazy"
-                                                        srcset="{{ secondary_image | img_url: '480x', crop: crop_position }} 480w, {{ secondary_image |img_url: '640x', crop: crop_position }} 640w, {{ secondary_image |img_url: '900x', crop: crop_position }} 900w, {{ secondary_image | img_url: '1080x', crop: crop_position }} 1080w"
+                                                        srcset="{{ secondary_image | img_url: '480x', crop: crop_position }} 480w, {{ secondary_image | img_url: '640x', crop: crop_position }} 640w, {{ secondary_image |img_url: '900x', crop: crop_position }} 900w, {{ secondary_image | img_url: '1080x', crop: crop_position }} 1080w"
                                                         />
                                                 </div>
                                             {%- endif -%}
@@ -94,90 +94,92 @@
                                             {%- endif -%}
                                         {% endif %}
                                     </div>
-                                 <div class="lh-product-actions">
-                                    <div class="lh-buttons-container">
-                                        {% if product.available == false %}
-                                            <a href="{{ product.url }}" title="{{ product.title | escape }}">@lang(section.settings.trans_view_more)</a>
-                                        {% elsif product.has_only_default_variant %}
-                                            <a href="/cart/add/{{ variant_selected.id }}" class="lh-product-btn-outstock" data-id="{{ variant_selected.id }}" class="lh-btn-add-to-cart" data-handle="{{ product.handle }}" data-pid="{{ product.id }}" title="{{ product.title | escape }}">@lang(section.settings.trans_add_cart)</a>
-                                        {% else  %}
-                                            <button class="lh-quick-shop-btn">@lang(section.settings.trans_quick_shop)</button>
-                                        {% endif %}
-                                        {% capture quickview_content %}
-                                            <span>@lang(section.settings.trans_quickview)</span>
-                                        {% endcapture %}
-                                        {%- render 'layouthub_quickview', quickview_content: quickview_content, product: product -%}
-                                        {%- capture wishlist_content -%}
-                                            @print(section.settings.trans_wishlist)
-                                        {%- endcapture -%}
-                                        {%- render 'layouthub_wishlist', wishlist_content:wishlist_content, wishlist_type: 'other',product: product -%}
-                                    </div>
-                                </div>
-                               
-                                {% if option_swatch_name and swatch_type != 'none' %}
-                                    <div class="lh-product-form__swatches">
-                                        {%- assign values = '' -%}
-                                        {%  for option in product.options_with_values %}
-                                            {%- assign option_index = forloop.index0 -%}
-                                            {% if option_swatch_name  == option.name %}
-                                                {%- assign hasSwatches = true -%}
-                                                {% if swatch_type == 'image'%}
-                                                    <ul class="lh-product-swatch-images lh-swatch-index lh-swatch-items" data-option-index="{{ forloop.index0 }}">
-                                                        {%- assign option_name  =  'option' | append: forloop.index  -%}
-                                                        {% for variant in product.variants %}
-                                                            {%- assign option_value_downcase =  variant[option_name]  | downcase -%}
-                                                            {%- if values != ""%}
-                                                                {%- assign tmp = values | split: '|' -%}
-                                                                {%- if tmp contains option_value_downcase  -%} {%- continue-%}{%- endif -%}
-                                                                {%- assign values = values  | append:   '|' | append: option_value_downcase -%}
-                                                            {%- else -%}
-                                                                {%- assign values =   option_value_downcase -%}
-                                                            {%- endif -%}
-                                                            <li class="lh-product-swatch-image lh-swatch-item {% if option_value == variant_selected[option_name] %} active{% endif %}" data-value="{{ variant[option_name] | escape }}" data-option-index="{{ option_index }}" data-lh-tooltip="{{ option_value | escape }}">
-                                                                <img src="{{ variant.image | img_url: '40x40' }}" width="20" alt="{{ prodcut.title  | escape }}" loading="lazy" />
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                {% else %}
-                                                    {%- assign option_name  =  'option' | append: forloop.index  -%}
-                                                    <ul class="lh-product-swatch-colors lh-swatch-index lh-swatch-items" data-option-index="{{ forloop.index0 }}">
-                                                        {% for value in option.values %}
-                                                            <li class="lh-product-swatch-color lh-swatch-item {% if value == variant_selected[option_name] %} active{% endif %}" data-value="{{ value | escape }}" data-option-index="{{ option_index }}" data-lh-tooltip="{{ value | escape }}">
-                                                                {% assign index_color = -1 %}
-                                                                {% assign color_value = value | downcase %}
-                                                                {%- for color_setting in color_names -%}
-                                                                    {% assign color_downcase = color_setting | downcase %}
-                                                                    {%- if color_downcase == color_value -%}
-                                                                        {% assign index_color = forloop.index0 %}
-                                                                        {%- break -%}
-                                                                    {%- endif -%}
-                                                                {%- endfor -%}
-                                                                {%- if index_color > -1 -%}
-                                                                        <span class="lh-color" style="background: {{ color_values[index_color] }}"></span>
-                                                                {%- else -%}
-                                                                        <span class="lh-no-color"></span>
-                                                                {%- endif -%}
-                                                            </li>
-                                                        {% endfor %}
-                                                    </ul>
-                                                {% endif %}
+                                    <div class="lh-product-actions">
+                                        <div class="lh-buttons-container">
+                                            {% if product.available == false %}
+                                                <a href="{{ product.url }}" title="{{ product.title | escape }}">@lang(section.settings.trans_view_more)</a>
+                                            {% elsif product.has_only_default_variant %}
+                                                <a href="/cart/add/{{ variant_selected.id }}" class="lh-product-btn-outstock" data-id="{{ variant_selected.id }}" class="lh-btn-add-to-cart" data-handle="{{ product.handle }}" data-pid="{{ product.id }}" title="{{ product.title | escape }}">@lang(section.settings.trans_add_cart)</a>
+                                            {% else  %}
+                                                <button class="lh-quick-shop-btn" type="button">@lang(section.settings.trans_quick_shop)</button>
                                             {% endif %}
-                                        {% endfor %}
-                                        <div class="lh-product-form__variants {% if hasSwatches and product.options.size < 2%} lh-hide-variant-select{% endif %}">
-                                            <select class="lh-product-form__variants-select" name="id" id="lh-product-select-{{ product.id }}-{{ uniqId }}">
-                                                {%- for variant in product.variants -%}
-                                                    <option {%  if variant.id ==  variant_selected.id %} selected="selected" {%  endif  %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
-                                                {%- endfor -%}
-                                            </select>
-                                        </div>
-                                        <div class="lh-product-form__actions">
-                                            <button type="submit" class="lh-quick-shop-submit">@lang(section.settings.trans_add_cart)</div>
+                                            {% capture quickview_content %}
+                                                <span>@lang(section.settings.trans_quickview)</span>
+                                            {% endcapture %}
+                                            {%- render 'layouthub_quickview', quickview_content: quickview_content, product: product -%}
+                                            {%- capture wishlist_content -%}
+                                                @print(section.settings.trans_wishlist)
+                                            {%- endcapture -%}
+                                            {%- render 'layouthub_wishlist', wishlist_content:wishlist_content, wishlist_type: 'other',product: product -%}
                                         </div>
                                     </div>
-                                {%  endif %}
+                               
+                                    {% if option_swatch_name and swatch_type != 'none' %}
+                                        <div class="lh-product-form__swatches">
+                                            {%- assign values = '' -%}
+                                            {%  for option in product.options_with_values %}
+                                                {%- assign option_index = forloop.index0 -%}
+                                                {% if option_swatch_name  == option.name %}
+                                                    {%- assign hasSwatches = true -%}
+                                                    {% if swatch_type == 'image'%}
+                                                        <ul class="lh-product-swatch-images lh-swatch-index lh-swatch-items" data-option-index="{{ forloop.index0 }}">
+                                                            {%- assign option_name  =  'option' | append: forloop.index  -%}
+                                                            {% for variant in product.variants %}
+                                                                {%- assign option_value_downcase =  variant[option_name]  | downcase -%}
+                                                                {%- if values != ""%}
+                                                                    {%- assign tmp = values | split: '|' -%}
+                                                                    {%- if tmp contains option_value_downcase  -%} {%- continue-%}{%- endif -%}
+                                                                    {%- assign values = values  | append:   '|' | append: option_value_downcase -%}
+                                                                {%- else -%}
+                                                                    {%- assign values =   option_value_downcase -%}
+                                                                {%- endif -%}
+                                                                <li class="lh-product-swatch-image lh-swatch-item {% if option_value == variant_selected[option_name] %} active{% endif %}" data-value="{{ variant[option_name] | escape }}" data-option-index="{{ option_index }}" data-lh-tooltip="{{ option_value | escape }}">
+                                                                    <img src="{{ variant.image | img_url: '40x40' }}" width="20" alt="{{ prodcut.title  | escape }}" loading="lazy" />
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% else %}
+                                                        {%- assign option_name  =  'option' | append: forloop.index  -%}
+                                                        <ul class="lh-product-swatch-colors lh-swatch-index lh-swatch-items" data-option-index="{{ forloop.index0 }}">
+                                                            {% for value in option.values %}
+                                                                <li class="lh-product-swatch-color lh-swatch-item {% if value == variant_selected[option_name] %} active{% endif %}" data-value="{{ value | escape }}" data-option-index="{{ option_index }}" data-lh-tooltip="{{ value | escape }}">
+                                                                    {% assign index_color = -1 %}
+                                                                    {% assign color_value = value | downcase %}
+                                                                    {%- for color_setting in color_names -%}
+                                                                        {% assign color_downcase = color_setting | downcase %}
+                                                                        {%- if color_downcase == color_value -%}
+                                                                            {% assign index_color = forloop.index0 %}
+                                                                            {%- break -%}
+                                                                        {%- endif -%}
+                                                                    {%- endfor -%}
+                                                                    {%- if index_color > -1 -%}
+                                                                            <span class="lh-color" style="background: {{ color_values[index_color] }}"></span>
+                                                                    {%- else -%}
+                                                                            <span class="lh-no-color"></span>
+                                                                    {%- endif -%}
+                                                                </li>
+                                                            {% endfor %}
+                                                        </ul>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                            <div class="lh-product-form__variants {% if hasSwatches and product.options.size < 2%} lh-hide-variant-select{% endif %}">
+                                                <select class="lh-product-form__variants-select" name="id" id="lh-product-select-{{ product.id }}-{{ uniqId }}">
+                                                    {%- for variant in product.variants -%}
+                                                        <option {%  if variant.id ==  variant_selected.id %} selected="selected" {%  endif  %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">
+                                                            {{ variant.title }}
+                                                        </option>
+                                                    {%- endfor -%}
+                                                </select>
+                                            </div>
+                                            <div class="lh-product-form__actions">
+                                                <button type="submit" class="lh-quick-shop-submit">@lang(section.settings.trans_add_cart)</button>
+                                            </div>
+                                        </div>
+                                    {%  endif %}
                                
                                
-                                 </div>
+                                </div>
                                 <div class="lh-product-information">
                                     <h3 class="lh-product-title">
                                         <a href="{{ product.url }}" title="{{ product.title | escape }}">{{ product.title }}</a>
@@ -227,7 +229,7 @@
                     @endjs 
                 @endif 
                 @if(component.type === 'featured_products')
-                    {%- assign featured_products_limit = @print(component.settings.limit) | plus: 0 %}
+                    {%- assign featured_products_limit = @print(component.settings.limit ? component.settings.limit : 4 ) | plus: 0 %}
                     {% if featured_products_limit == blank or featured_products_limit == 0 or featured_products_limit == "undefined" or featured_products_limit == '' %}
                         {%- assign featured_products_limit =  4 %}
                     {% endif %}
@@ -245,7 +247,7 @@
                                         <div class="lh-product-image" style="background-image: url('{{ p.featured_image | img_url: '320x320' }}')">
                                         </div>
                                         <div class="lh-product-informations">
-                                            <h4 class="lh-product-title"><a href="{{ product.url }}" title="{{ p.title | escape }}">{{ p.title }}</a></h4>
+                                            <h4 class="lh-product-title"><a href="{{ p.url }}" title="{{ p.title | escape }}">{{ p.title }}</a></h4>
                                            @if(component.settings.show_rating == 'yes')
                                                 <div class="lh-rating-wrapper">
                                                     {% render 'layouthub_review',  review_type: 'rating' ,product: p %}
@@ -264,7 +266,7 @@
                         </div>
                     </div>
                 @elseif( component.type === 'filter_vendor' )
-                    {% assign vendor_limit = @print(component.settings.limit) | plus: 0 %}
+                    {% assign vendor_limit = @print(component.settings.limit ? component.settings.limit : 5) | plus: 0 %}
                     {% if vendor_limit == blank or vendor_limit == 0 or vendor_limit == '' or vendor_limit == 'undefined'%}
                         {% assign vendor_limit =  10 %}
                     {% endif%}
@@ -275,14 +277,14 @@
                                 {% for vendor in collection.all_vendors %}
                                     {%- if forloop.index == vendor_limit -%}{% break %}{%- endif -%}
                                     <li class="lh-collection-vendor lh-filter-checkbox {% if collection.current_vendor == vendor %} active {% endif %}">
-                                        <a href="{{ vendor | url_for_type }}" title="{{ vendor | escape }}"> {{ vendor }}</a>
+                                        {{ vendor | link_to_vendor }}
                                     </li>
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                 @elseif( component.type === 'filter_type' )
-                    {% assign type_limit = @print(component.settings.limit) | plus: 0 %}
+                    {% assign type_limit = @print(component.settings.limit ? component.settings.limit : 5) | plus: 0 %}
                     {% if type_limit == blank or type_limit == 0 or type_limit == '' or type_limit == 'undefined'%}
                         {% assign type_limit =  10 %}
                     {% endif%}
@@ -294,7 +296,7 @@
                                     {% if type == blank %} {% assign type_limit =  type_limit | increment  %} {% continue %}{% endif %}
                                     {%- if forloop.index == type_limit -%}{% break %}{%- endif -%}
                                     <li class="lh-filter-checkbox lh-collection-type {% if collection.current_type == type %} active {% endif %}">
-                                        <a href="{{ type | url_for_type }}" title="{{ type | escape }}">{{ type }}</a>
+                                       {{ type | link_to_type }}
                                     </li>
                                 {% endfor %}
                             </ul>
@@ -306,7 +308,7 @@
                     @else 
                         {% assign tags = '@print(component.settings.tags)' | split: ',' %}
                     @endif 
-                    {% assign tag_limit = @print(component.settings.limit) | plus: 0 %}
+                    {% assign tag_limit = @print(component.settings.limit? component.settings.limit : 5) | plus: 0 %}
                     {% if tag_limit == blank or tag_limit == 0 or tag_limit == '' or tag_limit == 'undefined'%}
                         {% assign tag_limit =  10 %}
                     {% endif%}

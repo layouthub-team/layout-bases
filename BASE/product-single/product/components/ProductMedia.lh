@@ -16,6 +16,7 @@
     let zoomConfig = {responsive:true,scrollZoom: true };
     if(window.Swiper)
     {
+        console.log('Init swiper');
         var $nav = $this.find('.lh-product-single__thumbnails'),
             $for = $this.find('.lh-product-single_media-items') ;
          

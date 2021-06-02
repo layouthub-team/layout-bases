@@ -1,7 +1,7 @@
 <template>
     <div class="lh-product-collection-com__wrapper">
-        <div class="lh-row" v-html="liquid('product_items')">
-        </div>
+        <ul class="lh-row" v-html="liquid('product_items')">
+        </ul>
         <div class="lh-row" >
             <div class="lh-col-md-12 lh-collection-pagination" v-html="liquid('pagination')"></div>
         </div>
