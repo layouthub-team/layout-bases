@@ -6,15 +6,7 @@
     "version": "2.0",
     "category": "Product single",
     "platform": "shopify",
-    "vendors":   {
-        "js_swiper_slider": "https://dev.layouthub.com/storage/libraries/Swiper/swiper-bundle.min.js",
-        "css_swiper_slider": "https://dev.layouthub.com/storage/libraries/Swiper/swiper-bundle.min.css",
-        "css_layouthub_base": "https://dev.layouthub.com/storage/libraries/layouthub.css",
-        "js_option_selections":"https://dev.layouthub.com/storage/libraries/option_selection.js",
-        "js_jquery_zoom"  :"https://dev.layouthub.com/storage/libraries/jquery.zoom.js",
-        "js_jquery_countdown":"https://dev.layouthub.com/storage/libraries/jquery.countdown.js",
-        "css_line_icon": "https://dev.layouthub.com/storage/libraries/LineIcons/LineIcons.css"
-    },
+    "vendors": ["js_swiper_slider","css_swiper_slider","css_layouthub_base","js_option_selections","js_jquery_zoom", "js_jquery_countdown","css_line_icon"],
     "dev": "LayoutHub core team"
 } 
 @endschema 

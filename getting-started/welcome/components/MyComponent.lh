@@ -1,0 +1,17 @@
+<template>
+	<div>
+		<marquee behavior="alternate"  v-html="settings.description"></marquee>
+	</div>
+</template>
+@javascript
+let $this = jQuery(this);
+$this.find('marquee').click(function(){
+    jQuery(this).slideUp();
+});
+@endjavascript
+<style>
+     marquee{
+         color:red;
+         font-weight:bold;
+     }
+</style>

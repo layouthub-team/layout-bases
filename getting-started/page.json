@@ -1,0 +1,17 @@
+{
+    "name": "LayoutHub started",
+    "platform": "shopify",
+    "complete": false,
+    "dev": "daniel",
+    "category": "landing",
+    "author": "LayoutHub Team",
+    "website": "https://www.LayoutHub.com",
+    "version": "2.0",
+    "sections": ["welcome"],
+    "theme": {
+        "font_family": "Lato",
+        "title_font_family": "Lora",
+        "color": "#fff",
+        "font_size": "14"
+    }
+}
