@@ -36,16 +36,9 @@
                 swiper: nav,
             },
             on:{
-                beforeSlideChangeStart: function(slider){
-                    //Destroy zoom
-                    if(settings.use_zoom === 'yes')
-                    {
-                        $this.find('.lh-zoom-enabled').map(function(){
-                            jQuery(this).removeClass('lh-zoom-enabled').data('ezPlus').destroy()
-                        });
-                    }
-                },
+               
                 slideChange: function(){
+                    
                     nav.slideTo(slider.realIndex,300,false);
                     var vid = slider.slides[slider.activeIndex].dataset.variant_id +'';
                     if (vid) {
@@ -53,9 +46,25 @@
                         if(!id || !vid.includes(id.toString()))
                             $form.find('[name="id"]').attr('vid',parseInt(vid.split(',')[0]))[0].dispatchEvent(new Event('swatch'));
                     }
+                    if(settings.use_zoom === 'yes')
+                    {
+                        // console.log('Call destroy', $for.find('img').length);
+                        $for.find('img').map(function(i,e){
+                            var _this = jQuery(e),
+                            data = _this.data('ezPlus');
+                            if(data)
+                            {
+                                data.zoomContainer.remove();
+                                data.destroy();
+                                _this.removeClass('lh-zoom-enabled');
+                            }
+                        });
+                    }
                 },
                 slideChangeTransitionEnd: function(slider){
+                    console.log('slideChangeTransitionEnd');
                     nav.update();
+                    
                     $form.removeClass('lh-onchange-variant');
                     
                     if(settings.use_zoom === 'yes')
