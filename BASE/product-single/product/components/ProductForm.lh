@@ -65,8 +65,8 @@ export default {
     $select = $form.find('.lh-product-form__variants-select'),
     $quantityPlus = $form.find('.lh-quantity-plus');
     $quantityMinus = $form.find('.lh-quantity-minus');
-    id      = $form.data('id'),// Product ID
-    money_format = decodeURIComponent($form.data('moneyFormat')).replace(/\+/g, ' ');
+    id      = $form.attr('data-id'),// Product ID
+    money_format = decodeURIComponent($form.attr('data-money-format')).replace(/\+/g, ' ');
     if(window.LAYOUTHUB_LIVE && settings.enable_payment_button === 'yes' && settings.enable_external === 'no')
     {
         $this.find('.shopify-payment-button .shopify-payment-button__button').text('Buy it now').removeAttr('disabled')
@@ -102,7 +102,7 @@ export default {
         
         $form.find('#' + selector_id).on('swatch', function(evt, vid) {
             productSelect.selectVariant(evt.target.getAttribute('vid'));
-        });
+        }); 
 
         $quantityMinus.on('click', function(){
             $quantity.get(0).stepDown();
@@ -140,10 +140,10 @@ export default {
 
 
                 if (inventory_quantity < 1 && policy == 'continue') {
-                    $addToCart.addClass('lh-pre-order').text($addToCart.data('preOrder'));
+                    $addToCart.addClass('lh-pre-order').text($addToCart.attr('data-pre-order'));
                     max = 999999;
                 } else {
-                    $addToCart.removeClass('lh-pre-order').text($addToCart.data('addCart'));
+                    $addToCart.removeClass('lh-pre-order').text($addToCart.attr('data-add-art'));
                 }
                 
                 var quantity = parseInt($quantity.val());
@@ -172,13 +172,13 @@ export default {
                 else 
                 {
                     $addToCart.attr('disabled', 'disabled');
-                    $productStatus.show().html(`<span class="lh-sold-out-text">${$productStatus.data('outStock')}</span>`);
+                    $productStatus.show().html(`<span class="lh-sold-out-text">${$productStatus.attr('data-out-stock')}</span>`);
                 }
                 if (isSale) {
                      $countdown.show();
                     $compareAtPrice.css('display', 'block').html(window.HUB.formatMoney(variant.compare_at_price, money_format));
                     let salePercent = ((100/variant.compare_at_price) * (variant.compare_at_price- variant.price)).toFixed(2),
-                        saleText = $productStatus.data('sale');
+                        saleText = $productStatus.attr('data-sale');
                         saleText = saleText ? saleText.replace(/\%s/g,salePercent):'';
                         $productStatus.show().html(`<span class="lh-sale-text">${saleText}</span>`);
                 } else {
@@ -199,7 +199,7 @@ export default {
                     }
                 }
             } else {
-                $productStatus.show().html(`<span class="lh-product-unavailable">${$productStatus.data('unavailable')}</span>`);
+                $productStatus.show().html(`<span class="lh-product-unavailable">${$productStatus.attr('data-unavailable')}</span>`);
                 $form.removeClass('lh-onchange-variant');
                 if(settings.show_countdown_on_sale === 'no')
                 {
@@ -217,7 +217,7 @@ export default {
                 _this.siblings('li').removeClass('active');
                 _this.addClass('active');
                 var index = _this.closest('.lh-swatch-index').attr('data-option-index');
-                $this.find('select#' + selector_id + '-option-' + index).val(_this.data('value')).trigger('change');
+                $this.find('select#' + selector_id + '-option-' + index).val(_this.attr('data-value')).trigger('change');
             }
         });
 

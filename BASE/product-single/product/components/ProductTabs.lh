@@ -6,7 +6,7 @@
             </div>
             <div class="lh-product-tab__nav-item-has-child" v-if="settings.auto_tab === 'yes'" v-html="liquid('description_tabs_title')"></div>
         </div>
-        <div class="lh-product-tabs__content" v-if="showTabs">
+        <div class="lh-product-tabs__content" v-if="showTabs"> 
             <div class="lh-product-tab-content" v-for="(tab,index) in settings.tabs" :key="index+tab.type"  :id="tab.type +'-' + index" :class="[tab.type,index === 0 ? 'active':'']">
                 <div v-if="tab.type ==='description'" v-html="liquid('description')"></div>
                 <div v-else-if="tab.type ==='addition_information'" v-html="lang(tab.settings.addition_infor)"></div>
@@ -40,7 +40,7 @@
     $nav.on('click','.lh-product-tab__nav-item', function(e){
         e.preventDefault();
         
-        var _this = jQuery(this),target = _this.data('target');
+        var _this = jQuery(this),target = _this.attr('data-target');
         $nav.find('.lh-product-tab__nav-item.active').removeClass('active')
         _this.addClass('active');
         $tabContents.find('.lh-product-tab-content.active').removeClass('active')

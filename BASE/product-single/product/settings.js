@@ -14,7 +14,7 @@
                     multiple: false,
                     search: true,
                     type: "product",
-                    title: "Products",
+                    title: "Products", 
                     layout: "list",
                     default: [],
                 },

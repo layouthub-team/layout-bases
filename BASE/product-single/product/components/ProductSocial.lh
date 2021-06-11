@@ -8,7 +8,7 @@
                         <a :href="renderUrl(social)" class="lh-icon-network lh-social-facebook lh-tooltip_top" data-lh-tooltip="Facebook" target="_blank">
                             <i :class="classes(social)" class="lni"></i>
                         </a>
-                    </li>
+                    </li> 
                 </ul>
             </div>
         </div>

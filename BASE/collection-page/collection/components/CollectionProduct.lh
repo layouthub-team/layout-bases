@@ -46,7 +46,7 @@
             let $form = jQuery(selector.variantIdField[0].closest('form')),
             $cartButton = $form.find('.lh-quick-shop-submit'),
             $priceBox = $form.find('.lh-product-prices'),
-            money_format = decodeURIComponent($form.data('moneyFormat')).replace(/\+/g, ' ');
+            money_format = decodeURIComponent($form.attr('data-money-format')).replace(/\+/g, ' ');
             if(variant)
             {
                 if(variant.featured_image)
@@ -65,23 +65,23 @@
                 
                 if(variant.available)
                 {
-                    $cartButton.text($cartButton.data('addCart'))
+                    $cartButton.text($cartButton.attr('data-add-cart'))
                 }
                 else 
                 {
-                    $cartButton.text($cartButton.data('soldout'))
+                    $cartButton.text($cartButton.attr('data-soldout'))
                 }
             }
             else 
             {
                 $priceBox.html('');
-                $cartButton.text($cartButton.data('unavailable'))
+                $cartButton.text($cartButton.attr('data-unavailable'))
             }
 
         }
         $forms.each(function(){
             var $form = jQuery(this),
-            form_id = $form.data('form-id'),
+            form_id = $form.attr('data-form-id'),
             $jsonData = $this.find('#lh-product-json-'+ form_id);
             if($jsonData.length)
             {
@@ -108,7 +108,7 @@
                         _this.siblings('li').removeClass('active');
                         _this.addClass('active');
                         var index = _this.closest('.lh-swatch-index').attr('data-option-index');
-                        $form.find('select#' + selector_id + '-option-' + index).val(_this.data('value')).trigger('change');
+                        $form.find('select#' + selector_id + '-option-' + index).val(_this.attr('data-value')).trigger('change');
                     }
                 });
 
@@ -119,7 +119,7 @@
         $this.find('.lh-quick-shop-btn').on('click', function(){
             var $form = jQuery(this).closest('form');
             $form.find('.lh-product-form__swatches').toggleClass('lh-quick-shop-active');
-            let index = parseInt($form.find('.lh-swatch-index').data('optionIndex')) + 1;
+            let index = parseInt($form.find('.lh-swatch-index').attr('data-option-index')) + 1;
             $form.find('.lh-product-form__variants .selector-wrapper:nth-child('+index+')').hide();
         });
         

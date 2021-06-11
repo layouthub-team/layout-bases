@@ -8,7 +8,7 @@ window.HUB.formatMoney = window.HUB.formatMoney || function(t, r) {
     function e(t, r, e, o) {
         if (r = n(r, 2),
             e = n(e, ","),
-            o = n(o, "."),
+            o = n(o, "."), 
             isNaN(t) || null == t)
             return 0;
         var a = (t = (t / 100)
@@ -18,8 +18,8 @@ window.HUB.formatMoney = window.HUB.formatMoney || function(t, r) {
     }
     "string" == typeof t && (t = t.replace(".", ""));
     var o = "",
-        a = /\{\{\s*(\w+)\s*\}\}/,
-        i = r || '${{amount}}';
+        a = /\{\{\s*(\w+)\s*\}\}/, 
+        i = r || '${{amount}}'; 
     switch (i.match(a)[1]) {
         case "amount":
             o = e(t, 2);

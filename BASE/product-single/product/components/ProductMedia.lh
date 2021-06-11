@@ -10,7 +10,7 @@
     </div>
 </template>
 
-@javascript
+@javascript 
     var $this = jQuery(this),$form = $this.closest('.lh-product-single').find('.lh-product-single__form');
     
     let zoomConfig = {responsive:true,scrollZoom: true };

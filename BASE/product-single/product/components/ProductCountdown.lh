@@ -14,7 +14,7 @@
         prefix='lh-countdown-',
         $countdown = $this.find('.count_time'),
         $form = $wrapper.find('.lh-product-single__form'),
-        product_id = $form.data('id'),
+        product_id = $form.attr('data-id'),
         key = prefix+product_id,
         regex_digit = new RegExp(/^-?\d*\.?\d*$/),
         time = $countdown.html(),

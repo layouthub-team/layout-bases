@@ -6,11 +6,11 @@
 		 		{%- comment -%} Assign product when not in product page {%- endcomment -%}
 		 		{%- assign p  = all_products['@print(section.settings.product[0].value)']  -%}
 		 		{%- if  p.id != ""  and tmpl != 'product' -%}
-		 			{% assign product  = p  %}
+		 			{% assign product  = p  %} 
 		 		{%- endif -%}
                 {% if product == blank %}
                     {% assign product  =  collections['all'].products.first  %}
-                {% endif %}
+                {% endif %} 
 		 	@else
 		 		{%- if   tmpl != 'product' and product == blank-%}
 		 			{% assign product  =  collections['all'].products.first  %}

@@ -4,7 +4,7 @@
     "author": "Layouthub Team",
     "website": "https://www.layouthub.com",
     "version": "2.0",
-    "category": "Product single",
+    "category": "Product single", 
     "platform": "shopify",
     "vendors": ["js_swiper_slider","css_swiper_slider","css_layouthub_base","js_option_selections","js_jquery_zoom", "js_jquery_countdown","css_line_icon"],
     "dev": "LayoutHub core team"
@@ -20,7 +20,7 @@
             </div>
             
             <div class="lh-col-md-6 lh-col-sm-12">
-                <div class="lh-product-single__meta">
+                <div class="lh-product-single__meta"> 
                     <h1 class="lh-product-single__title" v-html="liquid('title')"></h1>
                     <div class="lh-wrap-product-rating" :data-app-review="liquid('app_review')">
                         <div v-if="settings.use_rating === 'yes'" v-html="liquid('rating')"></div>
