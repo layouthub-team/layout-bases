@@ -9,7 +9,7 @@
 @javascript
     var $this = jQuery(this),
         $wrapper = $this.closest('.lh-product-single'),
-        
+         
         $random = $this.find('.lh-random-countdown'),
         prefix='lh-countdown-',
         $countdown = $this.find('.count_time'),
@@ -24,7 +24,7 @@
             var d = window.localStorage.getItem(key);
             if (!Date.parse(d) || Date.parse(d) < new Date().getTime()){
                 d = new Date();
-                d.setSeconds(d.getSeconds()+ parseInt(countdown.attr('data-loop-time')));
+                d.setSeconds(d.getSeconds()+ parseInt($countdown.attr('data-loop-time')));
                 window.localStorage.setItem(key,d);
             }
         }
