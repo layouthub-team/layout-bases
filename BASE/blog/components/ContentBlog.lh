@@ -1,0 +1,41 @@
+<template>
+    <div class="lh-container">
+    <div class="lh-row">
+        <div class="lh-col-md-12">
+        <div :class="Classnew">
+            <div v-html="liquid('article_grid')"></div>
+        </div>
+        </div>
+    </div>
+    </div>
+</template>
+@javascript
+  var _this = jQuery(this),
+      list  = _this.find('.lh-blog-list');
+  _this.find('.lh-item-title.active a');
+  _this.find('.lh-item-title a').click(function(){
+    var __this = $(this);
+    if(!__this.hasClass('active')){
+      __this.parent().addClass('active').siblings('.active').removeClass('active');
+      setActiveCate(__this);
+    }
+
+  })
+  function setActiveCate($this) {
+    var target = $this.data('value'),
+        e_target = _this.find('.lh-item-blog[data-handle="'+target+'"]');
+    if(e_target){
+      list.css('transform','translateX(-'+(e_target.index()*100)+'%)');
+    }
+  }
+@endjavascript
+<script>
+export default {
+    	computed: {
+            Classnew(){
+                return this.settings.title_full + ' lh-article-grid'
+            }
+	}
+}
+</script>
+

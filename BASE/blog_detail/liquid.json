@@ -1,0 +1,216 @@
+{
+    "assign": {
+        "raw" : <<EOF
+        {%- assign tpl =  template | replace: '.', ' ' | truncatewords: 1, '' | handle  -%}
+        {% comment %} {% if tpl != 'article' %}
+          @if(section.settings.article.length)
+               {% assign article = articles['@print(section.settings.article[0].value)']%}
+          @endif
+        {%- endif -%} {% endcomment %}
+         {% assign string_cate = blog.title | append: "|" | append: blog.handle %}
+        @if(section.settings.blogs.length)
+            {% assign string_cate = "@print(section.settings.blogs.map(x => x.name + "|" + x.value).join(','))" %}
+            {% assign handle_blog = string_cate | split: "," | first | split: "|" | last %}
+        @endif
+        {%- if tpl != 'article' and article == blank -%}
+        @if(!section.settings.blogs.length)
+          {% assign string_cate = '' %}
+          {% assign handle_blog = '' %}
+        @endif
+        {% assign blog = blogs[handle_blog] %}
+        {% assign article = blog.articles.first %}
+        @if(section.settings.article.length)
+          {% assign handle_blog = '@print(section.settings.article[0].value.split('/')[0])' %}
+          {% assign blog = blogs[handle_blog] %}
+          {% assign article = articles['@print(section.settings.article[0].value)'] %}
+        @endif
+      {%- endif -%}
+       
+		EOF,
+        "content": ""
+    },
+    "title": {
+        "raw": "{{article.title}}",
+        "content": ""
+    },
+    "url": {
+        "raw": "{{shop.url}}{{article.url}}",
+        "content": ""
+    },
+    "author": {
+        "raw": "{{article.author}}",
+        "content": ""
+    },
+    "date": {
+        "raw": "{{article.published_at | date: '%d/%m/%Y' }}",
+        "content": ""
+    },
+    "has_article": {
+        "raw": "{%- if article != blank -%} yes {%- else -%} no {%- endif -%}",
+        "content": ""
+    },
+    "article_content": {
+        "raw": "{{article.content}}",
+        "content": ""
+    },
+    "category": {
+        "raw" : <<EOF
+            {% assign list_cate = string_cate | split: "," %}
+      {%- for item in list_cate -%}
+        {% assign item_value = item | split: "|" | last  %}
+        {% assign b_temp = blogs[item_value] %}
+        <li class="lh-item-blog {% if b_temp.handle == blog.handle %}active{% endif %}">
+          <a href="{{b_temp.url}}" data-article="{{b_temp.handle}}">{{b_temp.title}}</a>
+        </li>
+      {%- endfor -%}
+		EOF,
+        "content": ""
+    },
+    "popular": {
+        "raw" : <<EOF
+            <div class="lh-list-popular">
+        @if(section.settings.popular_category.length && section.settings.popular_category[0].value)
+          {% assign p_cate = blogs['@print(section.settings.popular_category[0].value)'] %}
+        @endif
+        {% assign p_limit = @print(section.settings.limit_popular) %}
+        {%- for p_article in p_cate.articles limit: p_limit -%}
+          <div class="lh-item-popular">
+              <div class="lh-row lh-align-center">
+                <div class="lh-col-md-6">
+                  <div class="lh-article-image">
+                    <a href="{{p_article.url}}">
+                      <img src="{{p_article.image | img_url: "340x228" , crop: "center" }}" alt="{{p_article.title}}">
+                    </a>
+                  </div>
+                </div>
+                <div class="lh-col-md-6">
+                  <div class="lh-article-info">
+                    <div class="lh-article-date">{{p_article.published_at | date: format: 'abbreviated_date' }}</div>
+                    <div class="lh-article-url">
+                      <a href="{{p_article.url}}">{{p_article.title}}</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        {%- endfor -%}
+      </div>
+		EOF,
+        "content": ""
+    },
+    "othe_article": {
+        "raw" : <<EOF
+            {%- if article != blank -%}
+          {%- if tpl != 'article' -%}
+            {% assign article_prev = blog.articles.first %}
+          {%- elsif blog.previous_article -%}
+            {% assign article_prev = blog.previous_article %}
+          {%- endif -%}
+          {% if article_prev  %}
+            {%- if article_prev.handle != article.handle -%}
+              <div class="lh-article-wraper lh-article-prev">
+                <div class="lh-article-img">
+                    <a href="{{article_prev.url}}">
+                      <img src="{{article_prev.image | img_url : '100x67', crop: 'center' }}" alt="">
+                    </a>
+                </div>
+                <h4 class="lh-article-title">
+                    <a href="{{article_prev.url}}">
+                      {{article_prev.title}}
+                    </a>
+                </h4>
+              </div>
+            {% endif %}
+          {% endif %}
+          {%- if tpl != 'article' -%}
+            {% assign article_next = blog.articles.last %}
+          {%- elsif blog.previous_article -%}
+            {% assign article_next = blog.next_article %}
+          {%- endif -%}
+          {% if article_next %}
+            {%- if article_next != article_prev and article_next.handle != article.handle -%}
+              <div class="lh-article-wraper lh-article-prev">
+                <div class="lh-article-img">
+                    <a href="{{article_next.url}}">
+                      <img src="{{article_next.image | img_url : '100x67', crop: 'center' }}" alt="">
+                    </a>
+                </div>
+                <h4 class="lh-article-title">
+                    <a href="{{article_next.url}}">
+                      {{article_next.title}}
+                    </a>
+                </h4>
+              </div>
+            {%- endif -%}
+          {% endif %}
+          {%- endif -%}
+		EOF,
+        "content": ""
+    },
+    "form_comment": {
+        "raw" : <<EOF
+            {%- if article != blank -%}
+      {% if blog.comments_enabled? %}
+        {%- if article.comments_count > 0 -%}
+        <div class="lh-comment-list">
+        {% paginate article.comments by 5 %}
+        {% for comment in article.comments %}
+                    <div class="lh-comment-item">
+                        <div class="lh-comment-info">
+                            <div class="lh-comment-image">
+                                <img src="https://www.gravatar.com/avatar/{{ comment.email | remove: ' ' | strip_newlines | downcase | md5 }}?s=64&d=mm&r=g" alt="{{comment.author}}">
+                        </div>
+
+                    </div>
+                    <div class="lh-comment-author">
+                        <div class="lh-comment-content">
+                        <span class="lh-author">{{comment.author}}</span>
+                        <span class="lh-date">{{comment.created_at | date: '%d/%m/%Y'}}</span>
+                    </div>
+                <div class="lh-main-content">
+            {{comment.content}}
+        </div>
+
+        </div>
+        </div>
+        {% endfor %}
+        {% endpaginate %}
+        </div>
+        <div class="lh-comment-count">
+          <h4 class="lh-title-cmt"><span>{{article.comments_count}} comment {%- if article.comments_count > 1 -%}s{%- endif -%}</span> {%- if article.comments_count == 0 -%} . Write a comment{%- endif -%}</h4>
+        </div>
+
+        {%- else -%}
+         <div class="lh-comment-count">
+          <h4 class="lh-title-cmt"><span>0 comments</span> {%- if article.comments_count == 0 -%} . Write a comment{%- endif -%}</h4>
+        </div>
+        {%- endif -%}
+
+        {% form 'new_comment', article %}
+          @if(section.settings.label_comments)
+            <h3 class="lh-form-title">@print(section.settings.label_comments)</h3>
+          @endif
+          {% if blog.moderated? %}
+
+          {% endif %}
+          {% if form.errors %}
+  {{ form.errors | default_errors }}
+  {% endif %}
+  <div class="lh-input-wrapper">
+        <div>
+            <input {% if form.errors contains "author" %} class="error"{% endif %} type="text" name="comment[author]" placeholder="@attr(section.settings.label_name)" id="comment-author" value="{{ form.author }}" required>
+            <input {% if form.errors contains "email" %} class="error"{% endif %} type="email" name="comment[email]" placeholder="@attr(section.settings.label_email)" id="comment-email" value="{{ form.email }}" autocorrect="off" autocapitalize="off" required>
+        </div>
+        <div class="lh-bottom">
+            <textarea {% if form.errors contains "body" %} class="error"{% endif %} name="comment[body]" id="comment-body" placeholder="@attr(section.settings.label_comment)" rows="1" required></textarea>
+            <button type="submit" class="button" data-lhi="label_submit">@lang(section.settings.label_submit)</button>
+            </div>
+        </div>
+
+        {% endform %}
+      {% endif %}
+    {%- endif -%}
+		EOF,
+        "content": ""
+    }
+}
