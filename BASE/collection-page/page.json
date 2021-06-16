@@ -4,6 +4,9 @@
     "website": "https://www.LayoutHub.com",
     "version": "4.0",
     "sections": ["collection"],
+    "id":"H7l2nMzyqdUFao1w",
+    "category":"collection",
+    "platform":"shopify",
     "theme":
       {
           "font_family": "Poppins",
@@ -11,4 +14,4 @@
           "title_font_family": "Poppins",
           "font_size": "14"
       }
-  }
+  } 

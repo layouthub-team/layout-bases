@@ -9,7 +9,7 @@
         computed:{
             background: function(value){
                 if(this.settings.use_custom_banner === 'yes')
-                {
+                { 
                     return `background: ${this.settings.header_banner}`;
                 }
                 return  `background-image: url('${this.liquid('collection_image')}')` 

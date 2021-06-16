@@ -5,7 +5,8 @@
             {
                 name: "collection",
                 label: "Pick a collection to preview with current layout",
-                tooltip: "To use for only product, you can assign it  in tab assign of Product template of App",
+                tooltip:
+                    "To use for only product, you can assign it  in tab assign of Product template of App",
                 type: "picker",
                 value: [],
                 description:
@@ -31,13 +32,15 @@
                 },
             },
             {
-                type: 'toggle',
-                value: 'yes',
-                label: 'Show rating?',
-                name:"show_rating",
-                description:"Rating maybe only working when published to live site",
-                tooltip: "Show the product's rating. Using 3rd review platform eg: Ali reviews, Ryviu, Judgme ..."
-            }
+                type: "toggle",
+                value: "yes",
+                label: "Show rating?",
+                name: "show_rating",
+                description:
+                    "Rating maybe only working when published to live site",
+                tooltip:
+                    "Show the product's rating. Using 3rd review platform eg: Ali reviews, Ryviu, Judgme ...",
+            },
         ],
     },
     {
@@ -175,12 +178,13 @@
                                 },
                             },
                             {
-                                type:"toggle",
-                                name:"show_rating",
+                                type: "toggle",
+                                name: "show_rating",
                                 label: "Show rating?",
                                 value: "yes",
-                                description:"Rating maybe only working when published to live site"
-                            }
+                                description:
+                                    "Rating maybe only working when published to live site",
+                            },
                         ],
                     },
                     {
@@ -206,9 +210,9 @@
                                 value: 5,
                                 options: {
                                     min: 1,
-                                    max:50
-                                }
-                            }
+                                    max: 50,
+                                },
+                            },
                         ],
                     },
                     {
@@ -234,9 +238,9 @@
                                 value: 5,
                                 options: {
                                     min: 1,
-                                    max:50
-                                }
-                            }
+                                    max: 50,
+                                },
+                            },
                         ],
                     },
                     {
@@ -268,8 +272,8 @@
                                 value: 20,
                                 options: {
                                     min: 1,
-                                    max:50
-                                }
+                                    max: 50,
+                                },
                             },
                             {
                                 type: "textarea",
@@ -306,11 +310,11 @@
                                 type: "textarea",
                                 label: "Enter your tags to filter",
                                 value: "Red,Green,Black,Blue,Yellow",
-                                description:  "Fill all your tags to filter. Space by comma, Ex: Red,Blue,Green"
+                                description:
+                                    "Fill all your tags to filter. Space by comma, Ex: Red,Blue,Green",
                             },
                         ],
-                    }
-                   
+                    },
                 ],
                 value: [
                     {
@@ -334,7 +338,7 @@
                         settings: {
                             enable: "yes",
                             title: " Filter by vendor",
-                            limit: 5
+                            limit: 5,
                         },
                     },
                     {
@@ -342,7 +346,7 @@
                         settings: {
                             enable: "yes",
                             title: " Filter by type",
-                            limit:5
+                            limit: 5,
                         },
                     },
                     {
@@ -358,7 +362,7 @@
                         settings: {
                             enable: "yes",
                             title: " Filter by tag colors",
-                            tags: "Red,Green,Blue"
+                            tags: "Red,Green,Blue",
                         },
                     },
                 ],
@@ -385,7 +389,8 @@
                 label: "Choose your product option display as Swatch",
                 name: "option_swatch_name",
                 value: "Color",
-                description:"Setting your color in \"App Settings/Swatch color settings\" "
+                description:
+                    'Setting your color in "App Settings/Swatch color settings" ',
             },
         ],
     },

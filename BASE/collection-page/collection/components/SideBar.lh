@@ -7,12 +7,12 @@ display: flex;
     position: relative;
     width: 100%;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: nowrap; 
     align-content: center;
     justify-content: center;
     align-items: stretch;
     padding: 5px;
-}
+} 
 .lh-product-item .lh-product-image {
     background-size:cover;
     width:90px;

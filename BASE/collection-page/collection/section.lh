@@ -6,7 +6,7 @@
     "version": "1.0",
     "category": "Collection",
     "platform": "shopify",
-    "vendors": ["css_layouthub_base","js_option_selections"]
+    "vendors": ["css_layouthub_base","js_option_selections"],
     "dev": "daniel"
 } 
 @endschema
@@ -39,3 +39,4 @@
         }
     }
 </script>
+  
