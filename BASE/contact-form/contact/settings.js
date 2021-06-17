@@ -25,7 +25,7 @@
                 name: "form_action",
                 label: "Form action",
                 relation: {
-                    parent: "cf_type",
+                    parent: "use_3_party",
                     show_when: "yes",
                 },
                 type: "text",
