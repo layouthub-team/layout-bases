@@ -83,7 +83,7 @@
             }
 
         }
-        $forms.each(function(){
+        settings.swatch_type && settings.swatch_type !== 'none' && $forms.each(function(){
             var $form = jQuery(this),
             form_id = $form.attr('data-form-id'),
             $jsonData = $this.find('#lh-product-json-'+ form_id);
