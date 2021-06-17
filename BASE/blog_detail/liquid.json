@@ -2,29 +2,12 @@
     "assign": {
         "raw" : <<EOF
         {%- assign tpl =  template | replace: '.', ' ' | truncatewords: 1, '' | handle  -%}
-        {% comment %} {% if tpl != 'article' %}
+         {% if tpl != 'article' %}
           @if(section.settings.article.length)
                {% assign article = articles['@print(section.settings.article[0].value)']%}
           @endif
-        {%- endif -%} {% endcomment %}
-         {% assign string_cate = blog.title | append: "|" | append: blog.handle %}
-        @if(section.settings.blogs.length)
-            {% assign string_cate = "@print(section.settings.blogs.map(x => x.name + "|" + x.value).join(','))" %}
-            {% assign handle_blog = string_cate | split: "," | first | split: "|" | last %}
-        @endif
-        {%- if tpl != 'article' and article == blank -%}
-        @if(!section.settings.blogs.length)
-          {% assign string_cate = '' %}
-          {% assign handle_blog = '' %}
-        @endif
-        {% assign blog = blogs[handle_blog] %}
-        {% assign article = blog.articles.first %}
-        @if(section.settings.article.length)
-          {% assign handle_blog = '@print(section.settings.article[0].value.split('/')[0])' %}
-          {% assign blog = blogs[handle_blog] %}
-          {% assign article = articles['@print(section.settings.article[0].value)'] %}
-        @endif
-      {%- endif -%}
+        {%- endif -%} 
+        
        
 		EOF,
         "content": ""
@@ -55,6 +38,24 @@
     },
     "category": {
         "raw" : <<EOF
+         {% assign string_cate = blog.title | append: "|" | append: blog.handle %}
+        @if(section.settings.blogs.length)
+            {% assign string_cate = "@print(section.settings.blogs.map(x => x.name + "|" + x.value).join(','))" %}
+            {% assign handle_blog = string_cate | split: "," | first | split: "|" | last %}
+        @endif
+        {%- if tpl != 'article' and article == blank -%}
+        @if(!section.settings.blogs.length)
+          {% assign string_cate = '' %}
+          {% assign handle_blog = '' %}
+        @endif
+        {% assign blog = blogs[handle_blog] %}
+        {% assign article = blog.articles.first %}
+        @if(section.settings.article.length)
+          {% assign handle_blog = '@print(section.settings.article[0].value.split('/')[0])' %}
+          {% assign blog = blogs[handle_blog] %}
+          {% assign article = articles['@print(section.settings.article[0].value)'] %}
+        @endif
+      {%- endif -%}
             {% assign list_cate = string_cate | split: "," %}
       {%- for item in list_cate -%}
         {% assign item_value = item | split: "|" | last  %}
