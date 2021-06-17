@@ -27,7 +27,7 @@
             watchSlidesVisibility: true,
             watchSlidesProgress: true,
         });
-        window.slider = new Swiper($for.get(0) , {
+        const slider = new Swiper($for.get(0) , {
             spaceBetween: 10,
             navigation: {
             

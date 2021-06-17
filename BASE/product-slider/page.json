@@ -10,7 +10,7 @@
   "website": "https://www.LayoutHub.com",
   "version": "1.0",
   "sections": [
-    "welcome"
+    "product-slider"
   ],
   "theme": {
     "font_family": "Lato",
