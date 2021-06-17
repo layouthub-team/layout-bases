@@ -1,0 +1,24 @@
+{
+    "form_start": {
+        "raw": "{% form 'contact'  %}",
+        "content": ""
+    },
+    "form_success": {
+        "raw" : <<EOF
+            {%- if form.posted_successfully? -%}
+			 	<div class="lh-form-success">
+					@lang(section.settings.cf_message_success)
+				</div>
+				{%- else -%}
+				<div class="form-errors">
+					{{ form.errors | default_errors }}
+				 </div>
+			 {%- endif -%}
+		EOF,
+        "content": ""
+    },
+    "form_end": {
+        "raw": "{% endform %}",
+        "content": ""
+    }
+}

@@ -1,0 +1,15 @@
+<template>
+    <div>
+        <div class="lh-message"></div>
+        <button type="submit" name="lh_contact_form_submit" class="lh-field-control">
+            {{ lang(data.settings.cf_label) }}
+            <span class="lh-dual-ring"></span> 
+        </button>
+    </div>
+</template>
+<script>
+export default {
+    props:['data']
+     
+}
+</script>

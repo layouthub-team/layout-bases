@@ -1,0 +1,22 @@
+<template>
+    <div>
+        <label :for="name" v-html="lang(data.settings.cf_label)"></label>
+        <textarea :name="name" :placeholder="data.settings.cf_placeholder" class="lh-field-control" :class="classes" :value="data.settings.cf_value" :required="data.settings.cf_required == 'yes'"></textarea>
+    </div>
+</template>
+<script>
+export default {
+    props:['data'],
+    computed: {
+        name(){
+            return this.settings.use_3_party === 'no' ? `contact[${this.data.settings.cf_name}]` : this.data.settings.cf_name
+        },
+        classes(){
+            return {'required' : this.data.settings.cf_required == 'yes' }
+        }
+    },
+    mounted() {
+        console.log('DATAAAA',this.data);
+    },
+}
+</script>

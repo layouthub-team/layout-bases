@@ -1,0 +1,23 @@
+{
+  "name": "Contact form",
+  "id": "WARQn79VG2mS5dJo",
+  "task_id": 593,
+  "platform": "shopify", 
+  "complete": false,
+  "dev": "admin",
+  "category": "contact",
+  "author": "LayoutHub Team",
+  "website": "https://www.LayoutHub.com",
+  "version": "2.0",
+  "sections": [
+    "contact"
+  ],
+  "theme": {
+    "font_family": "Lato",
+    "title_font_family": "Lora",
+    "color": "#bacdd9",
+    "font_size": "16"
+  },
+  "label": "Contact form",
+  "action": "item"
+}
