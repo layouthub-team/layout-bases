@@ -41,7 +41,7 @@
                     <template v-if="settings.use_3_party === 'no'">
                         <Liquid name="form_start" />
                         <!-- {% comment %}--> 
-                        <form action="/contact#contact-form"  method="POST" id="contact-form">
+                        <form action="/contact#contact-form"  method="POST" id="contact-form" class="lh-contact-form-element contact-form">
                         <!--  {% endcomment %}-->
                         <div class="row" v-html="liquid('form_success')">
                         </div>

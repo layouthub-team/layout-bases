@@ -32,7 +32,7 @@
                 value:
                     "//myshopify.us14.list-manage.com/subscribe/post?u=56b202e477d0fc9995c18aac3&id=a358ae9daf",
                 description:
-                    'Learn more What is <a href="https://docs.layouthub.com/user-guides/add-ons/third-party-email-subscribe/" target="_bank">Form action here</a> ',
+                    'Learn more What is <a class="text-gray-700" href="https://docs.layouthub.com/user-guides/featured-elements/sub-page/third-party-email-subscribe" target="_bank">Form action here</a> ',
             },
             {
                 name: "cf_custom_form",

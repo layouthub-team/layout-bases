@@ -1,6 +1,6 @@
 {
     "form_start": {
-        "raw": "{% form 'contact'  %}",
+        "raw": "{% form 'contact', class: 'lh-contact-form-element contact-form'  %}",
         "content": ""
     },
     "form_success": {
