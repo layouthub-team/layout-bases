@@ -1,0 +1,23 @@
+{
+  "name": "Instagram",
+  "id": "vM3pLgAJPKti9bTV",
+  "task_id": 590,
+  "platform": "shopify",
+  "complete": false,
+  "dev": "admin",
+  "category": "home",
+  "author": "LayoutHub Team",
+  "website": "https://www.LayoutHub.com",
+  "version": "1.0",
+  "sections": [
+    "slideshow"
+  ],
+  "theme": {
+    "font_family": "Lato",
+    "title_font_family": "Lora",
+    "color": "#bacdd9",
+    "font_size": "16"
+  },
+  "label": "Instagram",
+  "action": "item"
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Product Grid Simple",
+  "id": "eBRU4wX7hxPCW0vp",
+  "task_id": 591,
+  "platform": "shopify",
+  "complete": false,
+  "dev": "admin",
+  "category": "product",
+  "author": "LayoutHub Team",
+  "website": "https://www.LayoutHub.com",
+  "version": "1.0",
+  "sections": [
+    "product-grid"
+  ],
+  "theme": {
+    "font_family": "Lato",
+    "title_font_family": "Lora",
+    "color": "#bacdd9",
+    "font_size": "16"
+  },
+  "label": "Product Grid Simple",
+  "action": "item"
+}
