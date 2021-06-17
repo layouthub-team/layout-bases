@@ -1,0 +1,171 @@
+<template>
+    <div class="">
+         <div class="swiper-container lh-instagram">
+                <div class="swiper-wrapper lh-instagram-items">
+                </div>
+            </div>
+    </div>
+</template>
+@javascript
+    var $this = jQuery(this),
+        limit   = parseInt(settings.limit),
+        token = settings.instagram,
+        index = 0,
+        html = '',
+        slide = $this.find('.lh-instagram');
+         console.log('Setings', settings)
+        if(!token){
+            let cache = window.localStorage.getItem(token);
+           
+            if(cache)
+            {
+                let data = JSON.parse(cache);
+                if(data.exp > new Date().getTime())
+                {
+                    renderDom(data.data);
+                }
+                else
+                {
+                    getData(token)
+                }
+            }else
+            {
+                getData(token);
+            }
+
+        }
+        else 
+        {
+            getData(token);
+        }
+        function getData(token){
+            window.fetch('https://graph.instagram.com/me/media?'+ new URLSearchParams({fields: 'id,caption,media_url,thumbnail_url,media_type,permalink,username', access_token: token,limit  }).toString())
+            .then(res=>res.json())
+            .then(response=>{
+                console.log("response",response);
+                if(!window.LAYOUTHUB_LIVE)
+                {
+                    window.localStorage.setItem(token,JSON.stringify({exp:  new Date().setDate(new Date().getDate() +7) , data: response.data}));
+                }
+                renderDom(response.data)
+            })
+            .catch(e=>{
+                console.log('Error', e.message);
+            })
+             
+        }
+        function renderDom(data){
+            var username = "";
+            var html = data.map((item)=>{
+                username = item.username;
+                let dom =  '<div class="swiper-slide lh-istagram-item ' + ((item.media_type == "VIDEO") ? ' lh-video' : '') + '">';
+                    dom +=  (window.LAYOUTHUB_LIVE || window.location.protocol == "blob:") ? 
+                                `<a class="lh-instagram-link" href="${item.permalink}" style="background: url('${(item.media_type == "VIDEO") ? item.thumbnail_url : item.media_url}') center center / cover no-repeat scroll rgb(255, 255, 255);">` :
+                                `<a class="lh-instagram-link" href="${item.permalink}" data-lh-bg="${(item.media_type == "VIDEO") ? item.thumbnail_url : item.media_url}" style="background: url('data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=') center center / cover no-repeat scroll rgb(255, 255, 255);">`;
+                    dom += '</a></div>';
+                    return dom;
+                }).join('');
+                slide.find('.lh-instagram-items').html(html);
+                var data_slide = {
+                    slidesPerView: 'auto',
+                    speed : 500,
+                    loop: true,
+                    grabCursor : true,
+                    watchOverflow : true,
+                    spaceBetween: 15,
+                    centeredSlides: true,
+                    breakpoints: {
+                        576: {
+                        spaceBetween: 15
+                        },
+                        768: {
+                        spaceBetween: 30
+                        }
+                    },
+                    navigation: {
+                        nextEl: $this.find('.lh-nav-next').get(0),
+                        prevEl: $this.find('.lh-nav-prev').get(0),
+                    }
+                };
+                var swiper = new Swiper(slide.get(0),data_slide)
+        }
+@endjavascript
+
+<style>
+.lh-instagram-items {
+
+    .swiper-slide:nth-child(2n+1) {
+        width: calc(((100% + 30px) / 3) - 30px);
+    }
+
+    .swiper-slide:nth-child(2n) {
+        width: calc(((100% + 30px) / 4) - 30px);
+    }
+
+    .lh-wild_instagram .lh-insta-carousel {
+        overflow: visible;
+    }
+
+    a {
+        position: relative;
+        display: block;
+        padding-bottom: calc(100% - 0px);
+        overflow: hidden;
+    }
+
+    a::after {
+        content: "";
+        position: absolute;
+        inset: 0px;
+        background: rgba(var(--lh-color-rgb), 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.25s ease 0s;
+    }
+
+    .lh-video a::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0px;
+        height: 0px;
+        border-top: 20px solid transparent;
+        border-left: 30px solid rgba(255, 255, 255, 0.8);
+        border-bottom: 20px solid transparent;
+        transform: translate(-50%, -50%);
+        transition: all 0.25s ease 0s;
+    }
+    
+
+    .lh-wild_instagram .items-slider.lh-video a:hover::before {
+        opacity: 0;
+    }
+
+    
+    .img {
+        width: 100%;
+        transition: all 0.25s ease 0s;
+    }
+
+
+
+    @media screen and (max-width: 991px) {
+        .swiper-slide:nth-child(2n) {
+            width: calc(((100% + 30px) / 3) - 60px);
+        }
+    }
+
+    @media screen and (max-width: 767px) {
+        .lh-title {
+            font-size: calc(var(--lh-font-size) * 2);
+            margin-bottom: 32px;
+        }
+
+        .swiper-slide {
+            width: calc(((100% + 30px) / 2) - 30px) !important;
+        }
+    }
+
+}
+</style>

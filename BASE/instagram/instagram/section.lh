@@ -1,0 +1,29 @@
+@schema
+{
+     "name": "Instagram",
+    "author": "Layouthub Team",
+    "website": "https:\/\/www.layouthub.com",
+    "version": "2.0",
+    "category": "instagram",
+    "platform": "shopify",
+    "vendors": ["css_layouthub_base", "js_swiper_slider","css_swiper_slider"],
+    "dev": "daniel"
+}
+@endschema
+<template>
+    <div class="lh-wrapper">
+        <div class="lh-row">
+            <div class="lh-col-md-12">
+                <h3 v-html="settings.title"></h3>
+            </div>
+            <div class="lh-col-md-12">
+                <InstagramComponent />
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    
+}
+</script>
