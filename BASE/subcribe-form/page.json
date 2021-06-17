@@ -1,0 +1,23 @@
+{
+  "name": "Subcribe form",
+  "id": "qtusWnabYZgrNxMe",
+  "task_id": 595,
+  "platform": "shopify",
+  "complete": false,
+  "dev": "admin",
+  "category": "contact",
+  "author": "LayoutHub Team",
+  "website": "https://www.LayoutHub.com",
+  "version": "1.0",
+  "sections": [
+    "subscibe-form"
+  ],
+  "theme": {
+    "font_family": "Lato",
+    "title_font_family": "Lora",
+    "color": "#bacdd9",
+    "font_size": "16"
+  },
+  "label": "Subcribe form",
+  "action": "item"
+}

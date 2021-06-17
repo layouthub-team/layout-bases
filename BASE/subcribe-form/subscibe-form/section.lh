@@ -1,0 +1,252 @@
+@schema
+{
+     "name": "Subcribe form",
+    "author": "Layouthub Team",
+    "website": "https:\/\/www.layouthub.com",
+    "version": "2.0", 
+    "category": "contact",
+    "platform": "shopify",
+    "vendors": ["css_layouthub_base","css_line_icon"],
+    "dev": "daniel"
+}
+@endschema
+<template>
+    <div class="lh-wrapper">
+        <div class="lh-container">
+            <div class="lh-row">
+                <div class="lh-col-md-12">
+                    <div class="lh-heading">
+                        <h5 v-html="lang(settings.sub_heading)"></h5>
+                        <h3 v-html="lang(settings.heading)"></h3>
+                    </div>
+                </div>
+                <div class="lh-col-md-1"></div>
+                <div class="lh-col-md-12">
+                    <div class="section_smart_demo">
+                    <template v-if="settings.use_3_party === 'no'">
+                         <Liquid name="form_start" />
+                        <!-- {% comment %}--> 
+                        <form action="/contact#contact-form"  method="POST" id="contact-form" class="lh-contact-form-element contact-form">
+                        <!--  {% endcomment %}-->
+                        <div class="row" v-html="liquid('form_success')"></div>
+                        <div class="row" v-html="liquid('form_errors')"></div>
+                            <div class="lh-row">
+                                <div class="lh-field-wrapper lh-col-md-12" v-for="(item, index) in settings.form_fields" :key="index">
+                                    <component :is="item.type" :data="item"></component>                                         
+                                </div>
+                            </div>
+                        <!--  {% endcomment %}-->
+                        </form>
+                        <!--  {% endcomment %}-->
+                        <Liquid name="form_end" />
+                    </template>
+                    <template v-else>
+                        <form method="POST" :action="formAction" class="lh-subcriber-form">
+                            <div class="section_smart_content_demo section_smart_height section_smart_bg">
+                                <input type="hidden" class="setting_smart_section">
+                                <input type="hidden" class="preview_smart_section_setting">
+                                <input type="hidden" class="lh-profiles" name="profiles" :value="profileIDs">
+                                <div class="text-center lh-section-innner">
+                                    <div class="section-content lh-form-wrapper"> 
+                                        <div class="section_smart_error_text"></div>
+                                        <div class="lh-row lh-m-15 lh-form-fields">
+                                            <div class="section_smart_input lh-field-wrapper" v-for="(item, index) in settings.form_fields" :key="index">
+                                                <component :is="item.type" :data="item"></component>            
+                                            </div>
+                                        </div>
+                                        <div class="section_smart_error_text_submit"></div>
+                                        <span class="loader"><img src="%URL%/assets/images/loading.svg"></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    computed: {
+        profileIds(){
+              //Get profiles and passing into input hidden
+                let profileIDs = [];
+                
+                let profileData = this.settings.profile_user;
+
+                if(typeof profileData === 'string' && profileData !== ''){
+                    profileData = JSON.parse(profileData);
+                }
+
+                if(profileData.length){
+                    profileData.forEach((value,index)=>{
+                        let parseStr = value.split('|');
+                        
+                        profileIDs.push(parseStr[0]);
+                    })
+                    
+                }
+
+            return profileIDs.toString();
+        },
+        formAction(){
+            let formAction = '';
+
+            let profileData = this.settings.profile_user;
+
+            if(typeof profileData === 'string' && profileData !== ''){
+                profileData = JSON.parse(profileData);
+            }
+
+            if(profileData.length){
+                profileData.forEach((value,index)=>{
+                    let parseStr = value.split('|');
+                    formAction = parseStr[1];
+                })
+                
+            }
+            return formAction;
+        }
+    },
+}
+</script>
+@javascript
+
+var el = $(this);
+var xhr = null;
+profileParameterCheck(settings.profile_user);
+
+// validator profile if exist and show missing feild
+function profileParameterCheck(profileUser){
+    if(typeof profileUser === 'string' && profileUser !== ''){
+        profileUser = JSON.parse(profileUser);
+    }
+
+	let require_parameter = [];
+
+    if(profileUser.length){
+        // make require to array not double
+        $.each(profileUser, function(index, value){
+            let parseStr = value.split('|');
+            // if exist require parameter
+            if(parseStr[2]){
+                // only 1 parameter
+                if (parseStr[2].indexOf(',') == -1) {
+                    if(require_parameter.includes(parseStr[2]) != true){
+                        require_parameter.push(parseStr[2]);
+                        return;
+                    }
+                }
+
+                // multi parameter
+                let parseStrRequire = parseStr[2].split(',');
+                $.each(parseStrRequire, function(index2, value2){
+                    if(require_parameter.includes(value2) != true){
+                        require_parameter.push(value2);
+                    }
+                });
+            }
+        });
+
+	}
+
+	var errorHtml = validator_profile_require_parameter(require_parameter);
+	el.find('.section_smart_error_text').html(errorHtml);
+
+
+    //Event submit subcribe from
+    el.find('.lh-subcriber-form').submit(function(e){
+        e.preventDefault();
+
+        if(xhr !== null){
+            xhr.abort();
+        }
+
+        var t = $(this),
+            formData = t.serializeArray(),
+            messageDiv = t.find('.section_smart_error_text_submit'),
+            formAction = t.attr('action');
+
+        messageDiv.html('');
+
+        if(formAction == ''){
+            messageDiv.html('<div class="alert alert-error">An error has occurred. Please try to do it again.</div>');
+        }else{
+        t.addClass('loading');
+        //Send ajax request to endpoint
+        xhr = $.post( t.attr('action'),  formData)
+          .done(function( data ) {
+            var classAlert = data.status == 'success' ? 'success' : 'error';
+            messageDiv.html('<div class="alert alert-'+ classAlert +'">'+ data.message +'</div>');
+            if(data.status == 'success'){
+                setTimeout(function(){
+                    el.find('.section_smart_demo', el).addClass('section_smart_hide');
+                }, 1500);
+            }
+            xhr = null;
+            t.removeClass('loading');
+          });
+        }
+    });
+}
+
+// validator profile require parameter
+function validator_profile_require_parameter(parameters = ''){
+    if(parameters.length){
+        let parseStr = parameters;
+        let errorText = '';
+        $.each(parseStr, function(index, value){
+            if(el.find('[name="'+value+'"]').length == 0){
+                errorText += '<br/>Missing '+value+' field';
+            }
+        });
+        return errorText;
+	}
+}
+
+@endjavascript
+<style>
+ 
+
+.loader {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background: rgba(255, 255, 255, 0);
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease 0s;
+
+  img {
+    position: relative;
+    z-index: 999;
+    height: 123px;
+    width: 62px;
+  }
+}
+
+form.loading .loader {
+  opacity: 1;
+  visibility: visible;
+}
+h5,h3 {
+    text-align: center;
+}
+
+.lh-form-fields {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: center;
+}
+
+</style>

@@ -1,0 +1,26 @@
+{
+    "form_start": {
+        "raw": "{% form 'customer', id: formId, novalidate: 'novalidate', class: 'contact-form form-single-field' %}",
+        "content":""
+    },
+    "form_errors":{
+        "raw":<<EOF
+
+        EOF,
+        "content":""
+    },
+    "form_success":{
+        "raw":<<EOF 
+        {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success" tabindex="-1" data-form-status>
+                @print(lang(section.settings.success_text))
+            </p>
+        {%- endif -%}
+        EOF,
+        "content":""
+    },
+    "form_end":{
+        "raw":"{% endform %}",
+        "content":""
+    }
+}
