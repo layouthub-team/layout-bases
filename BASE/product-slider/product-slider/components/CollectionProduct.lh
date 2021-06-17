@@ -1,6 +1,6 @@
 <template>
     <div class="lh-product-collection-com__wrapper ">
-        <div class="lh-row swiper-container">
+        <div class="lh-row swiper-container" >
             <div class="swiper-wrapper" v-html="liquid('product_items')">
             </div>
             <div class="swiper-pagination" v-if="settings.show_pagination === 'yes'"></div>
@@ -128,33 +128,37 @@
         });
         
         var container = $this.find('.swiper-container').get(0);
-         const swiper = new Swiper( container , {
-            slidesPerView: 4,
-            spaceBetween: 10,
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-                type: 'bullets',
-            },
-             navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
+        if(container)
+        {
+            const swiper = new Swiper( container , {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                pagination: settings.show_pagination === 'yes' ?  {
+                    el: ".swiper-pagination",
+                    clickable: true,
+                    type: 'bullets',
+                } : null,
+                navigation: settings.show_navigation === 'yes' ? {
+                    nextEl: ".swiper-button-next",
+                    prevEl: ".swiper-button-prev",
+                    } : null,
+                breakpoints: {
+                    640: {
+                        slidesPerView: parseInt(settings.item_mobile),
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: parseInt(settings.item_tablet),
+                        spaceBetween: 40,
+                    },
+                    1024: {
+                        slidesPerView: parseInt(settings.item_desktop),
+                        spaceBetween: 50,
+                    },
                 },
-            breakpoints: {
-            640: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-            },
-            768: {
-                slidesPerView: 3,
-                spaceBetween: 40,
-            },
-            1024: {
-                slidesPerView: 4,
-                spaceBetween: 50,
-            },
-            },
-        });
+            });
+        }
+         
     
 @endjavascript
 

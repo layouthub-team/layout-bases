@@ -38,13 +38,12 @@
                     {%- for product in collection.products -%}
                         {%- assign variant_selected = product.selected_or_first_available_variant -%}
                         {%- assign hasSwatches = false -%}
-                        <div class="lh-collection-page__product-item lh-col-sm-6 lh-col-md-4 swiper-slide">
+                        <div class="lh-collection-page__product-item  swiper-slide">
                             {% assign form_id =  product.id | append: '-' | append:  uniqId %}
                             {%- assign money_format = shop.money_format | url_encode -%}
                             {% form 'product', product, class:'lh-product-item__form', data-form-id: form_id, data-id: product.id, data-pid: product.id, data-money-format: money_format %}
                                 <div class="lh-product-swatch-wrapper">
                                     {% assign secondary_image = product.images[1] %}
-                                    
                                     <div class="lh-product-image">
                                         {% if crop_type == 'auto'%}
                                             <div class="lh-prduct-featured-image">

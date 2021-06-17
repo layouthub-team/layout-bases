@@ -57,21 +57,33 @@
                 name: "item_desktop",
                 value: 4,
                 label: "Number item per view on Desktop",
-                tooltip: "Number of slides per view (slides visible at the same time on slider's container)."
+                tooltip: "Number of slides per view (slides visible at the same time on slider's container).",
+                options:{
+                    min:1,
+                    max:6
+                }
             },
             {
                 type: "number_slider",
                 name: "item_tablet",
                 value: 3,
                 label: "Number item per view on Tablet",
-                tooltip: "Number of slides per view (slides visible at the same time on slider's container)."
+                tooltip: "Number of slides per view (slides visible at the same time on slider's container).",
+                options:{
+                    min:1,
+                    max:6
+                }
             },
             {
                 type: "number_slider",
                 name: "item_mobile",
                 value: 2,
                 label: "Number item per view on mobile",
-                tooltip: "Number of slides per view (slides visible at the same time on slider's container)."
+                tooltip: "Number of slides per view (slides visible at the same time on slider's container).",
+                options:{
+                    min:1,
+                    max:6
+                }
             },
             {
                 type: 'toggle',
