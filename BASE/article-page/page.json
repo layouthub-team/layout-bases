@@ -1,0 +1,23 @@
+{
+  "name": "Article page",
+  "id": "lorb8qIUiMgZaznQ",
+  "task_id": 596,
+  "platform": "shopify",
+  "complete": false,
+  "dev": "admin",
+  "category": "article", 
+  "author": "LayoutHub Team",
+  "website": "https://www.LayoutHub.com",
+  "version": "1.0",
+  "sections": [
+    "article"
+  ],
+  "theme": {
+    "font_family": "Lato",
+    "title_font_family": "Lora",
+    "color": "#bacdd9",
+    "font_size": "16"
+  },
+  "label": "Article page",
+  "action": "item"
+}

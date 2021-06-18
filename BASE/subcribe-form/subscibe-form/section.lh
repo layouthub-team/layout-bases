@@ -27,15 +27,15 @@
                          <Liquid name="form_start" />
                         <!-- {% comment %}--> 
                         <form action="/contact#contact-form"  method="POST" id="contact-form" class="lh-contact-form-element contact-form">
-                        <!--  {% endcomment %}-->
-                        <div class="row" v-html="liquid('form_success')"></div>
-                        <div class="row" v-html="liquid('form_errors')"></div>
-                            <div class="lh-row">
-                                <div class="lh-field-wrapper lh-col-md-12" v-for="(item, index) in settings.form_fields" :key="index">
-                                    <component :is="item.type" :data="item"></component>                                         
+                            <!--  {% endcomment %}-->
+                            <div class="row" v-html="liquid('form_success')"></div>
+                            <div class="row" v-html="liquid('form_errors')"></div>
+                                <div class="lh-row">
+                                    <div class="lh-field-wrapper lh-col-md-12" v-for="(item, index) in settings.form_fields" :key="index">
+                                        <component :is="item.type" :data="item"></component>                                         
+                                    </div>
                                 </div>
-                            </div>
-                        <!--  {% endcomment %}-->
+                            <!--  {% endcomment %}-->
                         </form>
                         <!--  {% endcomment %}-->
                         <Liquid name="form_end" />
