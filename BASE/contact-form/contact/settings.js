@@ -254,6 +254,7 @@
                                 options: {
                                     text: "Text",
                                     email: "Email",
+                                    checkbox: 'Checkbox'
                                 },
                             },
                         ],
