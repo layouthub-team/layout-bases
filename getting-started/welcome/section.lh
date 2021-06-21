@@ -20,6 +20,7 @@
         <img :src="settings.logo" :alt="settings.title" width="500"/>
         <h3>{{upperCase}}</h3>
 		<MyComponent />
+        <p v-html="liquid('shop_name')"></p>
 	</div>
 </template>
 <script>

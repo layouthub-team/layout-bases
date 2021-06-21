@@ -1,0 +1,6 @@
+{
+    "shop_name":{
+        "raw":"{{shop.name}} @print(section.settings.title)",
+        "content":""
+    }
+}
