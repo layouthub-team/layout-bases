@@ -1,0 +1,39 @@
+@schema
+{
+    "name": "Product related",
+    "author": "Layouthub Team",
+    "website": "https:\/\/www.layouthub.com",
+    "version": "1.0",
+    "category": "Collection",
+    "platform": "shopify",
+    "vendors": ["css_layouthub_base","js_option_selections"],
+    "dev": "daniel"
+} 
+@endschema
+<template>
+    <div class="lh-collection-page lh-wrapper">
+        <Liquid name="liquid" /> 
+        <div class="lh-row">
+            <div class="lh-col-md-12">
+                <h3 class="lh-title" v-html="settings.title"></h3>
+            </div>
+            <div class="lh-col-sm-12 lh-collection-page__main lh-col-md-12">
+                <CollectionProduct /> 
+            </div>
+             
+        </div>
+    </div>
+</template>
+<script>
+    export default{
+        computed:{
+            
+        }
+    }
+</script>
+<style>
+    .lh-title{
+        text-align:center;
+        
+    }
+</style>

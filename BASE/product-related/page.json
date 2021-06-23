@@ -1,0 +1,23 @@
+{
+  "name": "Product related",
+  "id": "AlKFCNybIzq2OB1u",
+  "task_id": 604,
+  "platform": "shopify",
+  "complete": false,
+  "dev": "admin",
+  "category": "product",
+  "author": "LayoutHub Team",
+  "website": "https://www.LayoutHub.com",
+  "version": "1.0",
+  "sections": [
+    "product-related"
+  ],
+  "theme": {
+    "font_family": "Lato",
+    "title_font_family": "Lora",
+    "color": "#bacdd9",
+    "font_size": "16"
+  },
+  "label": "Product related",
+  "action": "item"
+}
