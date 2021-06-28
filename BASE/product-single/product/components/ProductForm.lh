@@ -149,7 +149,7 @@ export default {
                 var quantity = parseInt($quantity.val());
                 if(quantity> max) 
                     quantity = max;
-
+                quantity = isNaN(quantity) ? 1: quantity;
                 $quantity.attr('max',max).val(quantity);
 
                 $addToCart.removeAttr('disabled');
