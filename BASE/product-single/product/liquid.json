@@ -83,7 +83,15 @@
     },
      "countdown": {
         "raw" : <<EOF
-            <div class="count_time {% unless product.metafields.layouthub.countdown -%}
+            @if(section.settings.enable_progress_bar === 'yes' )
+            <div class="lh-count_time_from" style="display:none" data-pid="{{ product.id }}">
+				{%- if product.metafields.layouthub.countdown_from-%}
+					{{-product.metafields.layouthub.countdown_from-}}
+				 {%- else -%}
+					@print(section.settings.countdown_from.toString()){%- endif -%}
+		    </div>
+            @endif
+            <div class="lh-count_time {% unless product.metafields.layouthub.countdown -%}
 			        @attr(section.settings.use_rand_countdown === 'yes' ? 'lh-random-countdown':'')
 		        {%- endunless -%}
 		        " data-pid="{{ product.id }}">

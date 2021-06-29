@@ -1,6 +1,12 @@
 <template>
-    <div class="lh-single-product__countdown" :data-trans-dd="settings.trans_label_dd" :data-trans-hh="settings.trans_label_hh" :data-trans-mm="settings.trans_label_mm" :data-trans-ss="settings.trans_label_ss">
-        <div class="lh-countdown">
+    <div v-if="settings.use_countdown === 'yes'" class="lh-single-product__countdown" :data-trans-dd="settings.trans_label_dd" :data-trans-hh="settings.trans_label_hh" :data-trans-mm="settings.trans_label_mm" :data-trans-ss="settings.trans_label_ss">
+        <div class="lh-progress-bar" v-if="settings.enable_progress_bar === 'yes'">
+            <div class="lh-progress-bar__text" v-html="settings.progress_bar_text"></div>
+            <div class="lh-progress-bar__time">
+                <div class="lh-progress-bar__timer"></div>
+            </div>
+        </div>
+        <div class="lh-countdown" :data-countdown-from="settings.countdown_from"> 
 			<div class="lh-countdown-text"><p v-html="lang(settings.trans_countdown)"></p></div>
             <div v-html="liquid('countdown')"></div>
 	   </div>
@@ -12,7 +18,8 @@
          
         $random = $this.find('.lh-random-countdown'),
         prefix='lh-countdown-',
-        $countdown = $this.find('.count_time'),
+        $countdown = $this.find('.lh-count_time'),
+        $progress_bar = $this.find('.lh-progress-bar__timer'),
         $form = $wrapper.find('.lh-product-single__form'),
         product_id = $form.attr('data-id'),
         key = prefix+product_id,
@@ -26,7 +33,7 @@
                 d = new Date();
                 d.setSeconds(d.getSeconds()+ parseInt($countdown.attr('data-loop-time')));
                 window.localStorage.setItem(key,d);
-            }
+            } 
         }
 
         if($countdown.hasClass('lh-random-countdown'))
@@ -68,16 +75,44 @@
             label_mm: data.transMm,
             label_ss: data.transSs,
         };
-        time  = $this.find('.count_time').html();
-        jQuery.fn.countDown &&  $this.find('.count_time').countDown(countdown_trans);
-        $this.find('.count_time').on('time.elapsed',function(ev, ms){
+        
+        time  = $this.find('.lh-count_time').html();
+        time
+        jQuery.fn.countDown &&  $this.find('.lh-count_time').countDown(countdown_trans);
+        let time_start = $this.find('.lh-count_time_from').html();
+        try{
+            time_start = new Date(time_start).getTime();
+        }catch(e){
+            time_start = 0;
+        }
+        $this.find('.lh-count_time').on('time.elapsed',function(ev, ms){
+             
             if(int_time){
                 setTimeout(function(){
                     createNewDateLoop();
                 },1000);
             }
             jQuery(this).hide();
-        })
+        }).on('time.tick', function (ev, ms) {
+            if(settings.enable_progress_bar === 'yes' &&  time_start)
+            {
+               let end = $countdown.data('plugin_countDown').endDate;
+               console.log('Start',$this.find('.lh-count_time_from').html())
+               let now = new Date().getTime();
+               let total = end - time_start;
+               let elapse = end-now;
+               if(total > 0)
+               { 
+                   $progress_bar.show();
+                   let result = Math.round((total / elapse) * 100);
+                   result = result > 100 ? 100: result;
+                   $progress_bar.css('width',result + '%');
+               }
+               else 
+                $progress_bar.hide();
+            }
+            
+        });
 @endjavascript
 
 <style>
@@ -95,4 +130,21 @@
             padding:5px;
         }
     }
+    .lh-progress-bar{
+        display:block;
+        width: 100%;
+        .lh-progress-bar__time{
+            display:block;
+            width:100%;
+            background:green;
+            border-radius:5px;
+            .lh-progress-bar__timer{
+                width:100%;
+                height:8px;
+                background:red;
+                border-radius:5px;
+            }
+        }
+    }
+    
 </style>

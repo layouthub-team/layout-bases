@@ -138,6 +138,9 @@
                     "Only show when current variant is sale. Eg: Variant compare at price > Variant price",
                 label: "Show when on Sale",
                 value: "no",
+                options:{
+                    tooltip:false
+                },
                 relation: {
                     parent: "use_countdown",
                     show_when: "yes",
@@ -149,6 +152,9 @@
                 tooltip: "Radom countdown to time for each product",
                 label: "Random countdown to date and time",
                 value: "no",
+                options:{
+                    toolbar:false
+                },
                 description:
                     "Countdown from a random time to current time for each product. When end of time, it will automatic run again",
                 relation: {
@@ -157,7 +163,34 @@
                 },
             },
             {
+                name: "enable_progress_bar",
+                label: "Enable progress bar",
+                value: 'yes',
+                type:'toggle',
+                description: "The progress bar helps the customers know how many products in stock. Boost the conversion rate",
+                
+            },
+            {
+                name: "countdown_from",
+                type: "text",
+                placeholder: "yyy-mm-dd h:m, 2019-12-08T16:47:00+0000",
+                description:
+                    "Date and time to start countdown. Examole: 2021-12-08T16:47:00+0000 or 2021-12-08T16:47:00+0000",
+                label: "Countdown from",
+                value: "2021-12-08T16:47:00+0000",
+                options:{
+                    toolbar:false
+                },
+                relation: {
+                    parent: "enable_progress_bar",
+                    show_when: "yes",
+                },
+            },
+            {
                 name: "countdown",
+                options:{
+                    toolbar:false
+                },
                 type: "text",
                 placeholder: "yyy-mm-dd h:m, 2019-12-08T16:47:00+0000",
                 description:
@@ -169,6 +202,13 @@
                     show_when: "yes",
                 },
             },
+           
+            {
+                name: "progress_bar_text",
+                type:"text",
+                label: "Progress bar text",
+                value: "<strong>LIMITED!</strong> This sale will end after"
+            }
         ],
     },
     {
