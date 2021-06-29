@@ -156,9 +156,6 @@ export default {
                 $salePrice.html(window.HUB.formatMoney(variant.price, money_format));
                 $sku.html(variant.sku ? variant.sku : "N/A");
 
-                	
-
-
                 if(variant.available)
                 {
                     $productStatus.hide();
@@ -298,7 +295,7 @@ export default {
                 position: relative;
                 max-width:200px;
             }
-            input{
+            input{ 
                 -webkit-appearance: none; 
                 margin: 0; 
                 text-align: center;

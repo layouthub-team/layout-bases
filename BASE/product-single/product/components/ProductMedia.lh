@@ -13,7 +13,9 @@
 @javascript 
     var $this = jQuery(this),$form = $this.closest('.lh-product-single').find('.lh-product-single__form');
     
-    let zoomConfig = {responsive:true,scrollZoom: window.screen.width > 768 };
+    let zoomConfig = function(){
+        return {responsive:true,scrollZoom: window.innerWidth > 768, zoomType: window.innerWidth < 768 ? 'inner' : 'window' }
+    };
     if(window.Swiper)
     {
         console.log('Init swiper');
@@ -62,19 +64,25 @@
                     }
                 },
                 slideChangeTransitionEnd: function(slider){
-                    console.log('slideChangeTransitionEnd');
                     nav.update();
                     
                     $form.removeClass('lh-onchange-variant');
                     
                     if(settings.use_zoom === 'yes')
-                        jQuery(slider.slides[slider.activeIndex]).find('img').addClass('lh-zoom-enabled').ezPlus(zoomConfig);
+                        jQuery(slider.slides[slider.activeIndex]).find('img').addClass('lh-zoom-enabled').ezPlus(zoomConfig());
                      
                 }
             }
         });
          if(settings.use_zoom === 'yes')
-            jQuery(slider.slides[slider.activeIndex]).find('img').ezPlus(zoomConfig);
+            jQuery(slider.slides[slider.activeIndex]).find('img').ezPlus(zoomConfig());
+
+        window.addEventListener('resize', function(){
+            console.log('On rezize')
+            if(settings.use_zoom === 'yes')
+                jQuery(slider.slides[slider.activeIndex]).find('img').addClass('lh-zoom-enabled').ezPlus(zoomConfig());
+        });
+         
         
     }
     
