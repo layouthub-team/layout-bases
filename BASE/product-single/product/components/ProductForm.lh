@@ -86,7 +86,7 @@ export default {
         var $addToCart = $form.find('.lh-product-form__cart-submit'),
             $productStatus = $wrapper.find('.lh-product-status'),
             $priceBox = $wrapper.find('.lh-product-single__price');
-            $salePrice = $priceBox.find('lh-price'),
+            $salePrice = $priceBox.find('.lh-price'),
             $compareAtPrice = $priceBox.find('.lh-compare-at-price'),
             $sku = $form.find('.lh-sku'),
             $quantity = $form.find('.lh-product-quantity'),
