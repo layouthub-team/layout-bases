@@ -178,7 +178,7 @@
             },
             {
                 name: "countdown_from",
-                type: "text",
+                type: "date_time",
                 placeholder: "yyy-mm-dd h:m, 2019-12-08T16:47:00+0000",
                 description:
                     "Date and time to start countdown. Examole: 2021-12-08T16:47:00+0000 or 2021-12-08T16:47:00+0000",
@@ -197,7 +197,7 @@
                 options:{
                     toolbar:false
                 },
-                type: "text",
+                type: "date_time",
                 placeholder: "yyy-mm-dd h:m, 2019-12-08T16:47:00+0000",
                 description:
                     "Example: 60 days, 3:59:12 or 2019-12-08T16:47:00+0000. <br> To set for specific product you can using Metafield.<br /><a target='_blank' href='https://docs.layouthub.com/user-guides/layouts-support/custom-countdown-using-metafield'>Read more<a>",
