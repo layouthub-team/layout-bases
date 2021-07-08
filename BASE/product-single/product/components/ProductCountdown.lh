@@ -97,7 +97,6 @@
             if(settings.enable_progress_bar === 'yes' &&  time_start)
             {
                let end = $countdown.data('plugin_countDown').endDate;
-               console.log('Start',$this.find('.lh-count_time_from').html())
                let now = new Date().getTime();
                let total = end - time_start;
                let elapse = end-now;

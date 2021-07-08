@@ -18,7 +18,6 @@
     };
     if(window.Swiper)
     {
-        console.log('Init swiper');
         var $nav = $this.find('.lh-product-single__thumbnails'),
             $for = $this.find('.lh-product-single_media-items') ;
          
@@ -29,7 +28,7 @@
             watchSlidesVisibility: true,
             watchSlidesProgress: true,
         });
-        const slider = new Swiper($for.get(0) , {
+        window.slider = new Swiper($for.get(0) , {
             spaceBetween: 10,
             navigation: {
             
@@ -78,7 +77,6 @@
             jQuery(slider.slides[slider.activeIndex]).find('img').ezPlus(zoomConfig());
 
         window.addEventListener('resize', function(){
-            console.log('On rezize')
             if(settings.use_zoom === 'yes')
                 jQuery(slider.slides[slider.activeIndex]).find('img').addClass('lh-zoom-enabled').ezPlus(zoomConfig());
         });

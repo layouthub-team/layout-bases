@@ -77,6 +77,9 @@
                     'Choose your product option display as Swatch <a target="_blank" href="https://docs.layouthub.com/user-guides/featured-elements/product-page/general#3-set-swatch-layout">Learn more </a>',
                 label: "Select main swatch option",
                 value: "Color",
+                options:{
+                    toolbar: false
+                }
             },
             {
                 name: "swatch_image",
@@ -109,6 +112,9 @@
             {
                 type: "text",
                 name: "external_link",
+                options:{
+                    toolbar: false
+                },
                 description:
                     'Learn how to setup external by metafield <a href="https://docs.layouthub.com/user-guides/featured-elements/product-page/general#8-1-enable-external-affiliate-product" target="_blank">Learn more</a>',
                 label: "External/Affiliate link",
@@ -206,6 +212,7 @@
             {
                 name: "progress_bar_text",
                 type:"text",
+                
                 label: "Progress bar text",
                 value: "<strong>LIMITED!</strong> This sale will end after"
             }

@@ -1,9 +1,11 @@
 {
     "name": "Product single",
     "author": "LayoutHub",
+    "id": "6RWcd0bvEaZhoNQx",
     "website": "https://www.LayoutHub.com",
     "version": "4.0",
     "sections": ["product"],
+    "platform":"shopify",
     "theme": {
         "font_family": "Poppins",
         "color": "#0083b0",
@@ -11,4 +13,4 @@
         "font_size": "14"
     }
 }
- 
+  

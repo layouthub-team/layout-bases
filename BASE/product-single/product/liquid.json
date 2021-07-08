@@ -174,12 +174,12 @@
         "raw" : <<EOF
             {% assign swatch_type = "@print(section.settings.swatch_image === 'yes' ? 'images':'colors')" %}
             {% assign variant_selected = product.selected_or_first_available_variant %}
-				{% assign optionsToSwatch = '@print(section.settings.main_swatch)' | split: ',' %}
+				{% assign optionsToSwatch = '@print(section.settings.main_swatch)'   %}
 				{%- if  optionsToSwatch.size > 0%}
 					{%- if product.variants.size >= 1%}
 					{%- for option in product.options -%}
 						{%- assign option_index = forloop.index0 -%}
-						{%- if optionsToSwatch contains option -%}
+						{%- if optionsToSwatch == option -%}
 							{%- assign index = 'option' | append: forloop.index -%}
 							 	<div class="lh-swatch-{{ swatch_type }} lh-swatch-index lh-swatch-variations" data-option-index="{{ option_index }}">
                                     <div class="meta">
@@ -220,6 +220,7 @@
                                         {%- endfor -%}
                                     </ul>
 							    </div>
+                            {% break %}
 						{%- endif -%}
 					{%- endfor -%}
 					{%- endif -%}
@@ -229,10 +230,11 @@
     },
     "variant_selectors": {
         "raw" : <<EOF
+        
             {%- if product.variants.size >= 1%}
                 {%- for option in product.options_with_values -%}
                 {%- assign option_index = forloop.index0 -%}
-                    {%- if optionsToSwatch contains option.name or option.name == "Title" and product.options_with_values.size == 1 and option.values contains "Default Title" -%}
+                    {%- if optionsToSwatch == option.name or option.name == "Title" and product.options_with_values.size == 1 and option.values contains "Default Title" -%}
                         {%- continue -%}
                     {%- endif -%}
                     {%- assign index = 'option' | append: forloop.index -%}
@@ -242,7 +244,7 @@
                             </label>
                         </div>
                             <div class="lh-wrap-combobox">
-                                <div class="lh-cb-main lh-relative">
+                                <div class="lh-cb-main lh-relative"> 
                                 <div class="lh-selected-text"></div>
                                 <ul class="list-swatch-items" >
                                         {%- for value in option.values -%}
@@ -273,10 +275,45 @@
     },
     "product_media": {
         "raw" : <<EOF
-            {%- for image in product.images -%}
-		          <div class="lh-product-single__media swiper-slide" data-variant_id="  {{ image.variants | map:'id' | join: ',' }}">
-                        <img class="lh-product-featured-media" loading="lazy" src="{{ image | img_url: "master"}}" data-w="{{ image.width }}" data-h="{{ image.height }}" data-bigimg="{{ image | img_url: "master"}}" alt="{{ image.alt }}">
-                    </div>
+            {% for image in product.images%}
+                <div class="lh-product-single__media swiper-slide"  data-variant_id="{{ image.variants | map:'id' | join: ','  }}">
+                    <img class="lh-product-featured-media" loading="lazy" src="{{ image | img_url: "master"}}" data-bigimg="{{ image | img_url: "master"}}" alt="{{ image.alt }}">
+                </div>
+            {% endfor %}
+            {%- for media in product.media -%}
+                {% case media.media_type %}
+                    {% when 'image' %}
+                    {% when 'external_video'%}
+                        <div class="lh-product-single__media swiper-slide lh-external-video" data-position="{{media.position}}">
+							<div class="product-single__media" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
+								{{ media | external_video_tag }}
+							</div>
+						 </div>
+                    {% when 'video' %}
+                       
+						<div class="lh-product-single__media swiper-slide lh-video" data-position="{{media.position}}">
+							<div class="product-single__media product-single__media--video product-single__media--{{ media.id }}" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
+							{{ media | video_tag: class: 'media-video', image_size: image_size , controls: true }}
+							</div>
+						</div>
+                    {% when 'model' %}
+						<div class="lh-product-single__media swiper-slide no-answer-yet lh-model" data-position="{{media.position}}">
+							<div class="product-single__media" style="padding-top: 100%">
+								{{ media | model_viewer_tag: image_size: image_size, reveal: 'interaction', toggleable: true, data-model-id: media.id }}
+								<div class="lh-view-space">
+									<button class="product-single__view-in-space" data-shopify-xr data-shopify-model3d-id="{{ media.id }}" data-shopify-title="{{ product.title | escape }}" data-shopify-xr-hidden>
+										<span>...</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					{% else %}
+						<div data-media-type="{{media.media_type}}" class="items-media swiper-slide" data-position="{{media.position}}">
+							<div class="product-single__media" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
+							{{ media | media_tag: class: 'media-item', image_size: image_size }}
+							</div>
+						</div>
+                    {% endcase %}
 		        {%- endfor -%}
 		EOF,
         "content" : <<EOF
@@ -293,11 +330,28 @@
     },
     "product_thumbnails":{
         "raw" : <<EOF
-            {%- for image in product.images -%}
-				   <div class="lh-product-single__thumbnail swiper-slide" data-variant_id="{{ image.variants | map:'id' | join: ',' }}">
-		                <img loading="lazy" src="{{ image | img_url: '100x100' , crop: 'center'}}"   alt="{{ image.alt }}">
+            {% for image in product.images%}
+                <div class="lh-product-single__thumbnail swiper-slide"  data-variant_id="{{ image.variants | map:'id' | join:','  }}">
+                    <img class="lh-product-featured-media" loading="lazy" src="{{ image | img_url: "100x100"}}" alt="{{ image.alt  }}" />
+                </div>
+            {% endfor %}
+            {%- for media in product.media -%}
+                {% if media.media_type != 'image' %} 
+				   <div class="lh-product-single__thumbnail swiper-slide">
+		                <img loading="lazy" src="{{ media.preview_image | img_url: '100x100' , crop: 'center'}}"   alt="{{ media.alt }}" />
+                        {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+                                <div class="lh-thumbnail-badge">
+                                <i class="lni lni-play"></i>
+                            </div>
+                        {%- endif -%}
+                        {%- if media.media_type == 'model' -%}
+                        <div class="lh-thumbnail-badge">
+                            <i class="lni lni-blackboard"></i>
+                        </div>
+                        {%- endif -%}
 		            </div>
-				{%- endfor -%}
+                    {% endif %}
+			{%- endfor -%}
 		EOF,
         "content" : <<EOF
             <div class="lh-product-single__thumbnail swiper-slide">

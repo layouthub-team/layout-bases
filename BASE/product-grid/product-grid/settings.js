@@ -33,6 +33,7 @@
                 label: "How many product to show?",
                 value: 12,
                 options: {
+                    toolbar:false,
                     min: 1,
                     max: 20,
                 },
@@ -69,6 +70,9 @@
                 label: "Crop size",
                 value: "480x",
                 type: "text",
+                options: {
+                    toolbar:false
+                },
                 relation: {
                     parent: "crop_type",
                     show_when: "custom",
@@ -114,6 +118,9 @@
                 label: "Choose your product option display as Swatch",
                 name: "option_swatch_name",
                 value: "Color",
+                options:{
+                    toolbar: false
+                },
                 description:
                     'Setting your color in "App Settings/Swatch color settings" ',
             },

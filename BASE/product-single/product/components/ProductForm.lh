@@ -112,19 +112,18 @@ export default {
         });
 
         function selectCallback(variant, selector) {
-
             if (variant) {
                 try {
 
                     if (variant.featured_image && $slider.swiper) {
-                        var index = $nav.find('.lh-product-single__thumbnail[data-variant_id*="' + variant.id + '"]').index() ,
+                        var index =  $nav.find('.lh-product-single__thumbnail[data-variant_id*="' +variant.id + '"]:last').index(),
                             current = $slider.swiper.realIndex;
-                        if (index != current)
+                        if (index != current) 
                             $slider.swiper.slideTo(index, 200);
                         else
                             throw "not change";
                     } else {
-                        throw 'erorr';
+                        throw 'erorr'; 
                     }
                 } catch (e) {
                     $form.removeClass('lh-onchange-variant');
@@ -209,7 +208,7 @@ export default {
         };
         $form.find('.lh-swatch-item').on('click', function() {
             var _this = $(this);
-            if (!_this.hasClass('active') && !$form.hasClass('lh-onchange-variant')) {
+            if (!_this.hasClass('active')) {
                 $form.addClass('lh-onchange-variant');
                 _this.siblings('li').removeClass('active');
                 _this.addClass('active');
